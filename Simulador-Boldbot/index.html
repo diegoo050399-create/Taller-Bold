@@ -6,7 +6,7 @@
 <title>Boldbot — Simulador de Ventas WhatsApp</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap');
- 
+
   *{box-sizing:border-box;margin:0;padding:0}
   :root{
     --wa-bg:#eae6df;
@@ -25,7 +25,7 @@
     --tier2:#2563eb;
     --tier3:#9333ea;
   }
- 
+
   body{
     font-family:'Nunito',sans-serif;
     background:#f0f2f5;
@@ -36,7 +36,7 @@
     justify-content:center;
     padding:20px;
   }
- 
+
   .app-title{
     text-align:center;
     margin-bottom:16px;
@@ -45,7 +45,7 @@
   }
   .app-title h1{font-size:15px;font-weight:700;color:#41525d;letter-spacing:.3px}
   .app-title p{font-size:12px;color:#8696a0;margin-top:2px}
- 
+
   .main-layout{
     display:flex;
     gap:16px;
@@ -55,7 +55,7 @@
     opacity:0;
     animation:fadeUp .5s .2s forwards;
   }
- 
+
   /* ── CHAT WINDOW ── */
   .chat-window{
     flex:1;
@@ -67,7 +67,7 @@
     flex-direction:column;
     height:600px;
   }
- 
+
   .chat-header{
     background:var(--wa-header);
     padding:10px 16px;
@@ -87,7 +87,7 @@
   .chat-header-status{font-size:11px;color:rgba(255,255,255,.7);margin-top:1px}
   .chat-header-dots{display:flex;gap:4px}
   .chat-header-dots span{width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.6)}
- 
+
   .chat-bg{
     flex:1;
     overflow-y:auto;
@@ -100,11 +100,11 @@
   }
   .chat-bg::-webkit-scrollbar{width:4px}
   .chat-bg::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:2px}
- 
+
   .msg-row{display:flex;margin-bottom:2px}
   .msg-row.out{justify-content:flex-end}
   .msg-row.in{justify-content:flex-start}
- 
+
   .bubble{
     max-width:72%;
     padding:7px 10px 4px;
@@ -137,7 +137,7 @@
   }
   .bubble-time.in{justify-content:flex-end}
   .check{color:#53bdeb;font-size:12px}
- 
+
   .typing{
     display:none;
     align-items:center;
@@ -157,7 +157,7 @@
   }
   .typing span:nth-child(2){animation-delay:.2s}
   .typing span:nth-child(3){animation-delay:.4s}
- 
+
   .date-divider{
     text-align:center;
     margin:8px 0;
@@ -171,7 +171,7 @@
     border-radius:8px;
     box-shadow:0 1px 2px rgba(0,0,0,.08);
   }
- 
+
   .chat-input-area{
     background:#f0f2f5;
     padding:8px 12px;
@@ -203,7 +203,7 @@
   }
   .send-btn:hover{background:var(--wa-header-2)}
   .send-btn svg{width:20px;height:20px;fill:#fff}
- 
+
   /* ── PANEL LATERAL ── */
   .side-panel{
     width:280px;
@@ -212,7 +212,7 @@
     flex-direction:column;
     gap:12px;
   }
- 
+
   .panel-card{
     background:#fff;
     border-radius:12px;
@@ -233,7 +233,7 @@
   }
   .panel-header svg{width:14px;height:14px;fill:#fff;opacity:.8}
   .panel-body{padding:16px}
- 
+
   .field-row{
     display:flex;
     flex-direction:column;
@@ -263,7 +263,7 @@
     vertical-align:middle;
   }
   .field-dot.active{background:var(--wa-green)}
- 
+
   .tier-card{
     background:#fff;
     border-radius:12px;
@@ -306,7 +306,7 @@
     letter-spacing:.04em;
   }
   .sync-dot{width:8px;height:8px;border-radius:50%}
- 
+
   .progress-dots{
     display:flex;gap:6px;justify-content:center;
     padding:12px 16px;
@@ -318,21 +318,21 @@
   }
   .prog-dot.done{background:var(--wa-green)}
   .prog-dot.active{background:var(--wa-header);animation:pulse-dot .8s infinite}
- 
+
   @keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
   @keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
   @keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.4}}
 </style>
 </head>
 <body>
- 
+
 <div class="app-title">
   <h1>Boldbot · Simulador de Ventas WhatsApp</h1>
   <p>Conectado a n8n · Sistema de calificación de leads en tiempo real</p>
 </div>
- 
+
 <div class="main-layout">
- 
+
   <!-- CHAT -->
   <div class="chat-window">
     <div class="chat-header">
@@ -343,7 +343,7 @@
       </div>
       <div class="chat-header-dots"><span></span><span></span><span></span></div>
     </div>
- 
+
     <div class="chat-bg" id="chat-bg">
       <div class="date-divider"><span>Hoy</span></div>
       <div class="msg-row in" id="typing-row" style="display:none">
@@ -352,7 +352,7 @@
         </div>
       </div>
     </div>
- 
+
     <div class="chat-input-area">
       <input class="chat-input" id="chat-input" type="text"
         placeholder="Escribe un mensaje..." autocomplete="off"
@@ -362,10 +362,10 @@
       </button>
     </div>
   </div>
- 
+
   <!-- PANEL LATERAL -->
   <div class="side-panel">
- 
+
     <div class="panel-card">
       <div class="panel-header">
         <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
@@ -401,7 +401,7 @@
         <div class="prog-dot" id="pd4"></div>
       </div>
     </div>
- 
+
     <div class="tier-card" id="tier-card">
       <div class="tier-badge" id="tier-badge">
         <div class="tier-label">Clasificación del lead</div>
@@ -417,148 +417,123 @@
         <span id="sync-label">—</span>
       </div>
     </div>
- 
+
   </div>
 </div>
- 
+
 <script>
 // ── CONFIGURACIÓN ────────────────────────────────────────────
-// Reemplaza con tu URL real del webhook de n8n
 const N8N_WEBHOOK_URL = "https://n8n.flexia-automatizaciones.cloud/webhook/boldbot-chat";
- 
+
 // Estado de la conversación
 const state = {
   sessionId: "session_" + Date.now(),
   messages: [],
   capturedData: {
-    nombre: null,
-    negocio: null,
-    telefono: null,
-    email: null,
-    ventas: null
+    nombre: null, negocio: null,
+    telefono: null, email: null, ventas: null
   },
-  step: 0,
-  isTyping: false
+  isTyping: false,
+  initialized: false
 };
- 
-// ── INICIALIZACIÓN ───────────────────────────────────────────
-window.onload = () => {
-  setTimeout(() => {
-    addBotMessage("¡Hola! Soy Boldbot, el asistente de Bold Colombia 👋\n\nEstoy aquí para ayudarte a aceptar pagos con tarjeta y QR en tu negocio.\n\nCuéntame, ¿qué tipo de negocio tienes?");
-    updateProgress(0);
-  }, 800);
-};
- 
-// ── ENVIAR MENSAJE ───────────────────────────────────────────
-async function sendMessage() {
-  const input = document.getElementById("chat-input");
-  const text = input.value.trim();
-  if (!text || state.isTyping) return;
- 
-  input.value = "";
-  addUserMessage(text);
-  state.messages.push({ role: "user", content: text });
- 
+
+// ── INICIALIZACIÓN — saludo viene de n8n ─────────────────────
+window.onload = async () => {
   showTyping(true);
   document.getElementById("bot-status").textContent = "escribiendo...";
- 
+  updateProgress(0);
+
   try {
     const response = await fetch(N8N_WEBHOOK_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         sessionId: state.sessionId,
-        message: text,
-        history: state.messages,
-        capturedData: state.capturedData
+        message: "__INIT__",
+        history: [],
+        capturedData: state.capturedData,
+        isInit: true
       })
     });
- 
-    if (!response.ok) throw new Error("Error en el webhook");
- 
+
+    if (!response.ok) throw new Error("init failed");
+
     const data = await response.json();
- 
-    // n8n devuelve: { reply, capturedData, tier, fee_revenue, ready_to_sync }
     showTyping(false);
     document.getElementById("bot-status").textContent = "en línea";
- 
+
+    const welcomeMsg = data.reply ||
+      "¡Hola! Soy Boldbot, el asesor de Bold Colombia 👋\n\nMi objetivo es ayudarte a hacer crecer tu negocio con las mejores soluciones de pagos y servicios financieros.\n\nCuéntame, ¿qué tipo de negocio tienes?";
+
+    addBotMessage(welcomeMsg);
+    state.messages.push({ role: "assistant", content: welcomeMsg });
+    state.initialized = true;
+
+    if (data.capturedData) updateCapturedData(data.capturedData);
+    if (data.tier)         showTier(data.tier, data.fee_revenue, data.ready_to_sync);
+
+  } catch(e) {
+    showTyping(false);
+    document.getElementById("bot-status").textContent = "en línea";
+    // Saludo de respaldo si n8n no responde al init
+    const fallback = "¡Hola! Soy Boldbot, el asesor de Bold Colombia 👋\n\nEstoy aquí para ayudarte a hacer crecer tu negocio con pagos, financiamiento y más.\n\nCuéntame, ¿qué tipo de negocio tienes?";
+    addBotMessage(fallback);
+    state.messages.push({ role: "assistant", content: fallback });
+    state.initialized = true;
+  }
+};
+
+// ── ENVIAR MENSAJE ───────────────────────────────────────────
+async function sendMessage() {
+  const input = document.getElementById("chat-input");
+  const text  = input.value.trim();
+  if (!text || state.isTyping || !state.initialized) return;
+
+  input.value = "";
+  addUserMessage(text);
+  state.messages.push({ role: "user", content: text });
+
+  showTyping(true);
+  document.getElementById("bot-status").textContent = "escribiendo...";
+
+  try {
+    const response = await fetch(N8N_WEBHOOK_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        sessionId:    state.sessionId,
+        message:      text,
+        history:      state.messages,
+        capturedData: state.capturedData,
+        isInit:       false
+      })
+    });
+
+    if (!response.ok) throw new Error("webhook error " + response.status);
+
+    const data = await response.json();
+    showTyping(false);
+    document.getElementById("bot-status").textContent = "en línea";
+
     if (data.reply) {
       addBotMessage(data.reply);
       state.messages.push({ role: "assistant", content: data.reply });
     }
- 
-    // Actualizar datos capturados si n8n los detectó
-    if (data.capturedData) {
-      updateCapturedData(data.capturedData);
-    }
- 
-    // Mostrar TIER si ya está disponible
-    if (data.tier) {
-      showTier(data.tier, data.fee_revenue, data.ready_to_sync);
-    }
- 
-  } catch (error) {
+
+    if (data.capturedData) updateCapturedData(data.capturedData);
+    if (data.tier)         showTier(data.tier, data.fee_revenue, data.ready_to_sync);
+
+    // Actualiza progreso según datos capturados
+    const filled = Object.values(state.capturedData).filter(v => v !== null).length;
+    updateProgress(filled);
+
+  } catch(error) {
     showTyping(false);
     document.getElementById("bot-status").textContent = "en línea";
- 
-    // Modo demo sin webhook activo
-    handleDemoMode(text);
+    addBotMessage("Hubo un problema de conexión. ¿Puedes repetir tu mensaje?");
   }
 }
- 
-// ── MODO DEMO (sin webhook activo) ───────────────────────────
-// Simula el flujo de Boldbot cuando n8n no está conectado.
-// Útil para probar el simulador antes de configurar n8n.
- 
-const demoFlow = [
-  { trigger: null, reply: null }, // ya enviado en onload
-  { reply: "Perfecto 😊 ¿Hoy en día aceptas pagos con tarjeta o solo manejas efectivo?" },
-  { reply: "Entiendo. ¿Más o menos cuánto vendes al mes? No tiene que ser el número exacto." },
-  { reply: "¡Excelente! Para ayudarte mejor, ¿cuál es tu nombre completo?" },
-  { reply: "¿Y tu número de celular para el registro?" },
-  { reply: "¿Tienes un correo electrónico?" },
-  { reply: "Listo, ya tengo toda la información. Procesando tu clasificación... 🔄" }
-];
- 
-function handleDemoMode(text) {
-  const step = state.step;
- 
-  // Captura demo de datos según el paso
-  if (step === 0) updateField("negocio", text);
-  if (step === 2) updateField("ventas", text);
-  if (step === 3) updateField("nombre", text);
-  if (step === 4) updateField("telefono", text);
-  if (step === 5) updateField("email", text);
- 
-  state.step++;
-  updateProgress(state.step);
- 
-  const next = demoFlow[Math.min(state.step, demoFlow.length - 1)];
-  if (next && next.reply) {
-    setTimeout(() => {
-      addBotMessage(next.reply);
-      state.messages.push({ role: "assistant", content: next.reply });
- 
-      // Al completar el flujo demo, mostrar TIER calculado
-      if (state.step >= 6) {
-        setTimeout(() => {
-          const ventas = parseVentas(state.capturedData.ventas);
-          const fee = Math.round(ventas * 0.0299 * 100) / 100;
-          const tier = ventas > 10000000 ? "TIER_1" : ventas >= 5000000 ? "TIER_2" : "TIER_3";
-          showTier(tier, fee, tier !== "TIER_3");
-          addBotMessage(`¡Listo ${state.capturedData.nombre || ""}! Quedaste clasificado como ${tier}. Un asesor de Bold te contacta en las próximas horas. ¡Bienvenido a la familia Bold! 🎉`);
-        }, 1200);
-      }
-    }, 1200);
-  }
-}
- 
-function parseVentas(raw) {
-  if (!raw) return 3000000;
-  const num = parseInt(raw.replace(/\D/g, ""));
-  return isNaN(num) ? 3000000 : num;
-}
- 
+
 // ── UI HELPERS ───────────────────────────────────────────────
 function addUserMessage(text) {
   const chat = document.getElementById("chat-bg");
@@ -569,7 +544,7 @@ function addUserMessage(text) {
   chat.insertBefore(row, document.getElementById("typing-row"));
   scrollToBottom();
 }
- 
+
 function addBotMessage(text) {
   const chat = document.getElementById("chat-bg");
   const time = getTime();
@@ -579,7 +554,7 @@ function addBotMessage(text) {
   chat.insertBefore(row, document.getElementById("typing-row"));
   scrollToBottom();
 }
- 
+
 function showTyping(show) {
   state.isTyping = show;
   const row = document.getElementById("typing-row");
@@ -588,34 +563,34 @@ function showTyping(show) {
   indicator.classList.toggle("visible", show);
   if (show) scrollToBottom();
 }
- 
+
 function scrollToBottom() {
   const chat = document.getElementById("chat-bg");
   setTimeout(() => chat.scrollTop = chat.scrollHeight, 50);
 }
- 
+
 function getTime() {
   return new Date().toLocaleTimeString("es-CO", {hour:"2-digit",minute:"2-digit"});
 }
- 
+
 function escapeHtml(text) {
   return text.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
 }
- 
+
 // ── PANEL LATERAL ────────────────────────────────────────────
 function updateCapturedData(data) {
   Object.keys(data).forEach(key => {
     if (data[key]) updateField(key, data[key]);
   });
 }
- 
+
 function updateField(key, value) {
   if (!value) return;
   state.capturedData[key] = value;
- 
+
   const valEl = document.getElementById("val-" + key);
   const dotEl = document.getElementById("dot-" + key);
- 
+
   if (valEl) {
     valEl.textContent = value;
     valEl.classList.remove("empty");
@@ -623,7 +598,7 @@ function updateField(key, value) {
   }
   if (dotEl) dotEl.classList.add("active");
 }
- 
+
 function updateProgress(step) {
   for (let i = 0; i < 5; i++) {
     const dot = document.getElementById("pd" + i);
@@ -633,7 +608,7 @@ function updateProgress(step) {
     else if (i === step) dot.classList.add("active");
   }
 }
- 
+
 function showTier(tier, feeRevenue, readyToSync) {
   const card = document.getElementById("tier-card");
   const tierVal = document.getElementById("tier-value");
@@ -642,23 +617,23 @@ function showTier(tier, feeRevenue, readyToSync) {
   const syncDot = document.getElementById("sync-dot");
   const syncLabel = document.getElementById("sync-label");
   const badge = document.getElementById("tier-badge");
- 
+
   const tierConfig = {
     TIER_1: { color:"#16a34a", desc:"Prioridad alta · +$10M/mes", bg:"#f0fdf4" },
     TIER_2: { color:"#2563eb", desc:"Prioridad media · $5M–$10M/mes", bg:"#eff6ff" },
     TIER_3: { color:"#9333ea", desc:"Prioridad baja · -$5M/mes", bg:"#faf5ff" }
   };
- 
+
   const cfg = tierConfig[tier] || tierConfig.TIER_3;
- 
+
   tierVal.textContent = tier;
   tierVal.style.color = cfg.color;
   tierDesc.textContent = cfg.desc;
   badge.style.background = cfg.bg;
- 
+
   const fee = feeRevenue || 0;
   tierFee.textContent = "$" + fee.toLocaleString("es-CO") + " COP/mes";
- 
+
   if (readyToSync) {
     syncDot.style.background = "#16a34a";
     syncLabel.textContent = "ready_to_sync: true → Enviando al CRM";
@@ -668,9 +643,9 @@ function showTier(tier, feeRevenue, readyToSync) {
     syncLabel.textContent = "ready_to_sync: false → Nurturing";
     syncLabel.style.color = "#9333ea";
   }
- 
+
   card.classList.add("visible");
- 
+
   // Marcar todos los pasos como completados
   for (let i = 0; i < 5; i++) {
     const dot = document.getElementById("pd" + i);

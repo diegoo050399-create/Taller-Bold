@@ -476,7 +476,7 @@ window.onload = async () => {
     showTyping(false);
     document.getElementById("bot-status").textContent = "en línea";
     // Saludo de respaldo si n8n no responde al init
-    const fallback = "¡Hola! Soy Boldbot, el asesor de Bold Colombia 👋\n\nEstoy aquí para ayudarte a hacer crecer tu negocio con pagos, financiamiento y más.\n\nCuéntame, ¿qué tipo de negocio tienes?";
+    const fallback = "¡Hola! Soy Boldbot, el asesor de Bold Colombia 👋\n\nEstoy aquí para ayudarte a hacer crecer tu negocio con pagos, financiamiento y más.\n\n¿Cuál es tu nombre?";
     addBotMessage(fallback);
     state.messages.push({ role: "assistant", content: fallback });
     state.initialized = true;

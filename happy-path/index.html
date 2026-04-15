@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Path — Bold Sono QR</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{--bg:#0f1117;--card:#1a1d2e;--border:#2a2d3e;--sub:#8b8fa8;--accent:#e8315a}
+  body{background:var(--bg);font-family:'Inter',system-ui,sans-serif;color:#f0f0f5;padding:48px 24px}
+  .bold-tag{display:inline-block;background:var(--accent);color:#fff;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 12px;border-radius:4px;margin-bottom:10px}
+  .section-header{text-align:center;margin-bottom:28px;opacity:0;transform:translateY(-12px);animation:fadeUp .5s .1s forwards}
+  .section-header h1{font-size:26px;font-weight:700;color:#fff;letter-spacing:-.4px;margin-bottom:5px}
+  .section-header p{font-size:13px;color:var(--sub)}
+
+  /* SECTION 1 */
+  .section1{display:flex;flex-direction:column;align-items:center;width:100%;max-width:1100px;margin:0 auto}
+  .progress-bar{width:100%;height:4px;background:var(--border);border-radius:2px;margin-bottom:28px;overflow:hidden;opacity:0;animation:fadeUp .4s .05s forwards}
+  .progress-fill{height:100%;width:0%;background:var(--accent);border-radius:2px;transition:width .6s ease}
+  .pipeline{display:flex;align-items:flex-start;justify-content:center;gap:0;width:100%}
+  .stage{display:flex;flex-direction:column;align-items:center;opacity:0;transform:translateY(16px);transition:opacity .5s,transform .5s;flex:1}
+  .stage.visible{opacity:1;transform:translateY(0)}
+  .connector{display:flex;align-items:center;padding-top:48px;opacity:0;transition:opacity .4s;flex-shrink:0;width:24px}
+  .connector.visible{opacity:1}
+  .conn-line{width:24px;height:2px;background:var(--border);position:relative;overflow:hidden}
+  .conn-line::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:var(--accent)}
+  .connector.visible .conn-line::after{animation:slide .5s forwards}
+  .conn-arrow{width:0;height:0;border-top:5px solid transparent;border-bottom:5px solid transparent;border-left:7px solid var(--border);margin-left:-1px;transition:border-left-color .3s .4s}
+  .connector.visible .conn-arrow{border-left-color:var(--sub)}
+  .stage-label{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--sub);margin-bottom:10px;text-align:center}
+  .node{width:100%;min-height:96px;border-radius:16px;border:1.5px solid var(--border);background:var(--card);padding:16px 12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;transition:border-color .2s,transform .2s,box-shadow .2s}
+  .node:hover{transform:translateY(-3px)}
+  .node-icon{font-size:26px;margin-bottom:2px}
+  .node-title{font-size:13px;font-weight:600;text-align:center;line-height:1.3;color:#fff}
+  .node-sub{font-size:11px;text-align:center;line-height:1.3;color:var(--sub)}
+  .node.n-trigger{border-color:#185FA5;background:linear-gradient(135deg,#0c1a2e,#112240)}
+  .node.n-trigger:hover{border-color:#378ADD;box-shadow:0 8px 28px rgba(55,138,221,.25)}
+  .node.n-qualify{border-color:#534AB7;background:linear-gradient(135deg,#131028,#1a1545)}
+  .node.n-qualify:hover{border-color:#7F77DD;box-shadow:0 8px 28px rgba(127,119,221,.25)}
+  .node.n-interest{border-color:#BA7517;background:linear-gradient(135deg,#1f1608,#2a1e0a)}
+  .node.n-interest:hover{border-color:#EF9F27;box-shadow:0 8px 28px rgba(239,159,39,.25)}
+  .node.n-desire{border-color:#993C1D;background:linear-gradient(135deg,#1f0e08,#2a130a)}
+  .node.n-desire:hover{border-color:#D85A30;box-shadow:0 8px 28px rgba(216,90,48,.25)}
+  .node.n-action{border-color:#3B6D11;background:linear-gradient(135deg,#0d1a06,#112208)}
+  .node.n-action:hover{border-color:#639922;box-shadow:0 8px 28px rgba(99,153,34,.25)}
+  .node.n-crm{border-color:#0F6E56;background:linear-gradient(135deg,#051a14,#07221a)}
+  .node.n-crm:hover{border-color:#1D9E75;box-shadow:0 8px 28px rgba(29,158,117,.25)}
+  .event-tag{font-size:10px;font-weight:600;letter-spacing:.04em;border-radius:5px;padding:3px 8px;margin-top:8px;font-family:'SF Mono',monospace;white-space:nowrap}
+  .ev-blue{background:#0c447c;color:#85B7EB}
+  .ev-purple{background:#26215C;color:#AFA9EC}
+  .ev-amber{background:#412402;color:#FAC775}
+  .ev-coral{background:#4A1B0C;color:#F0997B}
+  .ev-teal{background:#04342C;color:#5DCAA5}
+  .funnel-pill{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:20px;padding:3px 10px;margin-top:5px;white-space:nowrap}
+  .fp-interes{background:#1f1608;color:#EF9F27;border:1px solid #BA7517}
+  .fp-deseo{background:#1f0e08;color:#D85A30;border:1px solid #993C1D}
+  .fp-accion{background:#0d1a06;color:#639922;border:1px solid #3B6D11}
+  .speech-box{width:100%;margin-top:20px;background:#1a1d2e;border:1px solid #2a2d3e;border-radius:14px;padding:18px 28px;opacity:0;transition:opacity .5s;min-height:80px}
+  .speech-box.visible{opacity:1}
+  .speech-stage{font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);margin-bottom:7px}
+  .speech-text{font-size:14px;color:#d0d4e8;line-height:1.75}
+  .controls{display:flex;align-items:center;gap:12px;margin-top:16px}
+  .btn{background:transparent;border:1px solid var(--border);color:var(--sub);font-size:12px;padding:8px 18px;border-radius:8px;cursor:pointer;transition:border-color .2s,color .2s}
+  .btn:hover{border-color:var(--accent);color:var(--accent)}
+  .step-counter{font-size:12px;color:var(--sub)}
+  .legend{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:20px}
+  .leg{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--sub)}
+  .leg-dot{width:9px;height:9px;border-radius:2px;flex-shrink:0}
+
+  /* DIVIDER */
+  .divider-wrap{display:flex;flex-direction:column;align-items:center;margin:60px auto;width:100%;max-width:1100px;gap:14px}
+  .divider-line{width:100%;height:1px;background:linear-gradient(90deg,transparent,#2a2d3e 20%,#e8315a 50%,#2a2d3e 80%,transparent)}
+  .divider-label{font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--sub)}
+  .divider-arrow{display:flex;flex-direction:column;align-items:center;gap:3px;animation:bounce 1.5s ease-in-out infinite;margin-top:4px}
+  .divider-arrow span{display:block;width:12px;height:12px;border-right:2.5px solid var(--accent);border-bottom:2.5px solid var(--accent);transform:rotate(45deg)}
+  .divider-arrow span:nth-child(1){opacity:1}
+  .divider-arrow span:nth-child(2){opacity:.55;margin-top:-7px}
+  .divider-arrow span:nth-child(3){opacity:.2;margin-top:-7px}
+
+  /* SECTION 2 */
+  .section2{display:flex;flex-direction:column;align-items:center;width:100%;max-width:1100px;margin:0 auto}
+  .funnel-wrap{display:flex;align-items:stretch;justify-content:center;gap:0;width:100%}
+  .moment{flex:1;display:flex;flex-direction:column;align-items:center;opacity:0;transform:translateY(20px);transition:opacity .6s,transform .6s}
+  .moment.visible{opacity:1;transform:translateY(0)}
+  .moment-connector{width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center;padding-top:72px;opacity:0;transition:opacity .5s}
+  .moment-connector.visible{opacity:1}
+  .mc-line{width:32px;height:2px;background:var(--border);position:relative;overflow:hidden}
+  .mc-line::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:var(--accent)}
+  .moment-connector.visible .mc-line::after{animation:slide .5s forwards}
+  .mc-arrow{width:0;height:0;border-top:5px solid transparent;border-bottom:5px solid transparent;border-left:7px solid var(--border);margin-left:-1px;transition:border-left-color .3s .4s}
+  .moment-connector.visible .mc-arrow{border-left-color:var(--sub)}
+  .moment-number{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;padding:3px 10px;border-radius:20px;border:1px solid}
+  .mcard{width:100%;border-radius:18px;border:1.5px solid var(--border);background:var(--card);padding:28px 22px;display:flex;flex-direction:column;align-items:center;gap:12px;transition:transform .2s,box-shadow .2s}
+  .mcard:hover{transform:translateY(-4px)}
+  .mcard-icon{font-size:36px}
+  .mcard-title{font-size:18px;font-weight:700;text-align:center;color:#fff}
+  .mcard-state{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;border-radius:20px;padding:3px 12px}
+  .mcard-desc{font-size:13px;color:#b0b4cc;line-height:1.7;text-align:center;margin-top:4px}
+  .mcard-divider{width:40px;height:1px;background:var(--border);margin:4px 0}
+  .mcard-message{width:100%;background:#0f1117;border-radius:10px;padding:12px 14px;border-left:3px solid}
+  .mcard-message-label{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px}
+  .mcard-message-text{font-size:12px;color:#c0c4d8;line-height:1.6;font-style:italic}
+  .mcard-trigger{font-size:10px;font-weight:600;border-radius:5px;padding:3px 8px;margin-top:8px;font-family:'SF Mono',monospace}
+  .m1 .moment-number{color:#EF9F27;border-color:#BA7517;background:#1f1608}
+  .m1 .mcard{border-color:#BA7517;background:linear-gradient(160deg,#1a1608,#1f1e0a)}
+  .m1 .mcard:hover{box-shadow:0 10px 32px rgba(239,159,39,.15)}
+  .m1 .mcard-state{background:#1f1608;color:#EF9F27;border:1px solid #BA7517}
+  .m1 .mcard-message{border-color:#BA7517}
+  .m1 .mcard-message-label{color:#EF9F27}
+  .m1 .mcard-trigger{background:#412402;color:#FAC775}
+  .m2 .moment-number{color:#D85A30;border-color:#993C1D;background:#1f0e08}
+  .m2 .mcard{border-color:#993C1D;background:linear-gradient(160deg,#1a0e08,#1f130a)}
+  .m2 .mcard:hover{box-shadow:0 10px 32px rgba(216,90,48,.15)}
+  .m2 .mcard-state{background:#1f0e08;color:#D85A30;border:1px solid #993C1D}
+  .m2 .mcard-message{border-color:#993C1D}
+  .m2 .mcard-message-label{color:#D85A30}
+  .m2 .mcard-trigger{background:#4A1B0C;color:#F0997B}
+  .m3 .moment-number{color:#639922;border-color:#3B6D11;background:#0d1a06}
+  .m3 .mcard{border-color:#3B6D11;background:linear-gradient(160deg,#0d1a06,#0f1f08)}
+  .m3 .mcard:hover{box-shadow:0 10px 32px rgba(99,153,34,.15)}
+  .m3 .mcard-state{background:#0d1a06;color:#639922;border:1px solid #3B6D11}
+  .m3 .mcard-message{border-color:#3B6D11}
+  .m3 .mcard-message-label{color:#639922}
+  .m3 .mcard-trigger{background:#173404;color:#C0DD97}
+  .insight-box{width:100%;margin-top:24px;background:#1a1d2e;border:1px solid #2a2d3e;border-radius:14px;padding:18px 28px;opacity:0;transition:opacity .6s}
+  .insight-box.visible{opacity:1}
+  .insight-label{font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+  .insight-text{font-size:14px;color:#d0d4e8;line-height:1.75}
+  .made-by{text-align:center;margin-top:40px;font-size:11px;color:#3a3d55}
+
+  @keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+  @keyframes slide{from{left:-100%}to{left:0}}
+  @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(232,49,90,.4)}50%{box-shadow:0 0 0 10px rgba(232,49,90,0)}}
+  .node.active-pulse,.mcard.active-pulse{animation:pulse .9s ease-out}
+</style>
+</head>
+<body>
+
+<!-- ══ SECTION 1 ══ -->
+<div class="section1">
+  <div class="bold-tag">Bold · Sono QR</div>
+  <div class="section-header">
+    <h1>Happy Path — WhatsApp a CRM</h1>
+    <p>Datáfono Sono QR &nbsp;·&nbsp; 6 etapas &nbsp;·&nbsp; 5 eventos &nbsp;·&nbsp; 3 momentos de funnel</p>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="prog"></div></div>
+  <div class="pipeline">
+    <div class="stage" id="s0">
+      <div class="stage-label">Entrada</div>
+      <div class="node n-trigger"><div class="node-icon">💬</div><div class="node-title">Primer contacto</div><div class="node-sub">Comerciante escribe por WA</div></div>
+      <div class="event-tag ev-blue">contact_started</div>
+    </div>
+    <div class="connector" id="c0"><div class="conn-line"></div><div class="conn-arrow"></div></div>
+    <div class="stage" id="s1">
+      <div class="stage-label">Calificación</div>
+      <div class="node n-qualify"><div class="node-icon">🎯</div><div class="node-title">Calificación SQL</div><div class="node-sub">3 preguntas clave</div></div>
+      <div class="event-tag ev-purple">lead_qualified</div>
+      <div class="funnel-pill fp-interes">Interés</div>
+    </div>
+    <div class="connector" id="c1"><div class="conn-line"></div><div class="conn-arrow"></div></div>
+    <div class="stage" id="s2">
+      <div class="stage-label">Presentación</div>
+      <div class="node n-interest"><div class="node-icon">📲</div><div class="node-title">Pitch del producto</div><div class="node-sub">Beneficios + precio</div></div>
+      <div class="event-tag ev-amber">price_check</div>
+    </div>
+    <div class="connector" id="c2"><div class="conn-line"></div><div class="conn-arrow"></div></div>
+    <div class="stage" id="s3">
+      <div class="stage-label">Conversión</div>
+      <div class="node n-desire"><div class="node-icon">⚡</div><div class="node-title">Manejo de objeción</div><div class="node-sub">Cierre conversacional</div></div>
+      <div class="funnel-pill fp-deseo">Deseo</div>
+    </div>
+    <div class="connector" id="c3"><div class="conn-line"></div><div class="conn-arrow"></div></div>
+    <div class="stage" id="s4">
+      <div class="stage-label">Intención</div>
+      <div class="node n-action"><div class="node-icon">✅</div><div class="node-title">Confirmación</div><div class="node-sub">Captura de datos</div></div>
+      <div class="event-tag ev-coral">purchase_intent</div>
+      <div class="funnel-pill fp-accion">Acción</div>
+    </div>
+    <div class="connector" id="c4"><div class="conn-line"></div><div class="conn-arrow"></div></div>
+    <div class="stage" id="s5">
+      <div class="stage-label">CRM</div>
+      <div class="node n-crm"><div class="node-icon">🗂️</div><div class="node-title">Lead en CRM</div><div class="node-sub">Listo para ventas</div></div>
+      <div class="event-tag ev-teal">lead_crm_synced</div>
+    </div>
+  </div>
+  <div class="speech-box" id="speech">
+    <div class="speech-stage" id="speech-stage"></div>
+    <div class="speech-text" id="speech-text"></div>
+  </div>
+  <div class="controls">
+    <button class="btn" id="pauseBtn" onclick="togglePause()">⏸ Pausar</button>
+    <button class="btn" onclick="stepBack()">← Anterior</button>
+    <button class="btn" onclick="stepNext()">Siguiente →</button>
+    <button class="btn" onclick="restart()">↺ Reiniciar</button>
+    <span class="step-counter" id="stepCounter">Etapa 1 de 6</span>
+  </div>
+  <div class="legend">
+    <div class="leg"><div class="leg-dot" style="background:#185FA5"></div>Evento analítica</div>
+    <div class="leg"><div class="leg-dot" style="background:#EF9F27"></div>Interés</div>
+    <div class="leg"><div class="leg-dot" style="background:#D85A30"></div>Deseo</div>
+    <div class="leg"><div class="leg-dot" style="background:#639922"></div>Acción</div>
+    <div class="leg"><div class="leg-dot" style="background:#7F77DD"></div>Punto SQL</div>
+  </div>
+</div>
+
+<!-- ══ DIVIDER ══ -->
+<div class="divider-wrap">
+  <div class="divider-line"></div>
+  <div class="divider-label">¿Qué hace que cada etapa funcione?</div>
+  <div class="divider-arrow"><span></span><span></span><span></span></div>
+</div>
+
+<!-- ══ SECTION 2 ══ -->
+<div class="section2">
+  <div class="bold-tag">Bold · Momentos del Funnel</div>
+  <div class="section-header">
+    <h1>Los 3 momentos que definen la conversión</h1>
+    <p>Cada etapa requiere un mensaje distinto — el mensaje equivocado en el momento equivocado pierde el lead</p>
+  </div>
+  <div class="funnel-wrap">
+    <div class="moment m1" id="m0">
+      <div class="moment-number">Momento 01</div>
+      <div class="mcard" id="mcard0">
+        <div class="mcard-icon">👀</div>
+        <div class="mcard-title">Interés</div>
+        <div class="mcard-state">Calificación SQL</div>
+        <div class="mcard-desc">El comerciante está explorando. Sabe que Bold existe pero no está convencido de que lo necesita. Responde preguntas — eso ya es una señal.</div>
+        <div class="mcard-divider"></div>
+        <div class="mcard-message"><div class="mcard-message-label">Mensaje correcto</div><div class="mcard-message-text">"Información clara, preguntas cortas, cero presión. El objetivo es calificar, no vender todavía."</div></div>
+        <div class="mcard-trigger">lead_qualified</div>
+      </div>
+    </div>
+    <div class="moment-connector" id="mc0"><div class="mc-line"></div><div class="mc-arrow"></div></div>
+    <div class="moment m2" id="m1">
+      <div class="moment-number">Momento 02</div>
+      <div class="mcard" id="mcard1">
+        <div class="mcard-icon">🔥</div>
+        <div class="mcard-title">Deseo</div>
+        <div class="mcard-state">Manejo de objeción</div>
+        <div class="mcard-desc">El comerciante ya entiende el producto y se imagina usándolo, pero tiene miedos. Una objeción no es un rechazo — es deseo con fricción.</div>
+        <div class="mcard-divider"></div>
+        <div class="mcard-message"><div class="mcard-message-label">Mensaje correcto</div><div class="mcard-message-text">"Empatía + argumento concreto + urgencia real. Resolver la objeción sin empujar demasiado."</div></div>
+        <div class="mcard-trigger">price_check</div>
+      </div>
+    </div>
+    <div class="moment-connector" id="mc1"><div class="mc-line"></div><div class="mc-arrow"></div></div>
+    <div class="moment m3" id="m2">
+      <div class="moment-number">Momento 03</div>
+      <div class="mcard" id="mcard2">
+        <div class="mcard-icon">✅</div>
+        <div class="mcard-title">Acción</div>
+        <div class="mcard-state">Confirmación</div>
+        <div class="mcard-desc">El comerciante tomó la decisión. Ya no necesita más argumentos — necesita que sea facilísimo decir que sí y entregar sus datos.</div>
+        <div class="mcard-divider"></div>
+        <div class="mcard-message"><div class="mcard-message-label">Mensaje correcto</div><div class="mcard-message-text">"Fricción cero. Captura de datos fluida, confirmación inmediata y sensación de que tomó la mejor decisión."</div></div>
+        <div class="mcard-trigger">purchase_intent</div>
+      </div>
+    </div>
+  </div>
+  <div class="insight-box" id="insight">
+    <div class="insight-label">Clave del diseño conversacional</div>
+    <div class="insight-text">La mayoría de los flujos de WhatsApp fallan porque usan el mismo tono en los tres momentos. Bold necesita una IA que detecte en cuál momento está el comerciante y adapte su mensaje en tiempo real — eso es lo que separa un chatbot de un vendedor inteligente.</div>
+  </div>
+</div>
+
+<div class="made-by">Juan Diego Rodríguez · Bold Case Study · Marketing IA Trainer</div>
+
+<script>
+const STEP=3000;
+const stages=['s0','s1','s2','s3','s4','s5'];
+const conns=['c0','c1','c2','c3','c4'];
+const speeches=[
+  {stage:'Entrada',text:'Todo comienza cuando un comerciante escribe por WhatsApp — vía anuncio, QR o referido. La IA responde en segundos, sin espera. Ese primer mensaje es la puerta de entrada al embudo.'},
+  {stage:'Calificación — Momento: Interés',text:'Antes de mostrar cualquier producto, la IA hace 3 preguntas clave: ¿Tienes un negocio activo? ¿Aceptas tarjetas hoy? ¿Cuánto vendes al mes? Si pasa las tres, el sistema dispara el evento lead_qualified.'},
+  {stage:'Presentación',text:'Con el lead calificado, la IA presenta el Sono QR de forma directa y cercana: sin mensualidad, depósito en 24 horas, acepta todas las tarjetas. El tono no es corporativo — es como si un amigo le explicara por qué esto le conviene al negocio.'},
+  {stage:'Conversión — Momento: Deseo',text:'Aquí es donde la mayoría de los flujos fallan. El comerciante tiene dudas: ya tiene datáfono, cree que es caro, sus clientes no pagan con tarjeta. La IA tiene respuestas para cada objeción y usa urgencia real para empujar el cierre.'},
+  {stage:'Intención — Momento: Acción',text:'El comerciante dice que sí. La IA captura de forma natural: nombre, teléfono, email y ventas mensuales aproximadas. No es un formulario frío — es una conversación que termina con el dato listo para el CRM.'},
+  {stage:'CRM — Lead listo para ventas',text:'El lead llega al CRM ya procesado: validado, clasificado como TIER_1 o TIER_2, con su estimated_fee_revenue calculado y ready_to_sync en true. El equipo comercial solo prioriza y llama.'}
+];
+const prog=document.getElementById('prog');
+const speechBox=document.getElementById('speech');
+const speechStageEl=document.getElementById('speech-stage');
+const speechTextEl=document.getElementById('speech-text');
+const stepCounter=document.getElementById('stepCounter');
+const pauseBtn=document.getElementById('pauseBtn');
+let timers=[],paused=false,currentStep=-1;
+function showStep(i){
+  if(i<0||i>=stages.length)return;
+  currentStep=i;
+  stages.forEach((id,idx)=>{const el=document.getElementById(id);idx<=i?el.classList.add('visible'):el.classList.remove('visible');});
+  conns.forEach((id,idx)=>{const el=document.getElementById(id);idx<i?el.classList.add('visible'):el.classList.remove('visible');});
+  const nd=document.getElementById(stages[i]).querySelector('.node');
+  nd.classList.add('active-pulse');setTimeout(()=>nd.classList.remove('active-pulse'),900);
+  prog.style.width=((i+1)/stages.length*100)+'%';
+  stepCounter.textContent='Etapa '+(i+1)+' de '+stages.length;
+  speechStageEl.textContent=speeches[i].stage;
+  speechTextEl.textContent=speeches[i].text;
+  speechBox.classList.add('visible');
+}
+function animate(){stages.forEach((id,i)=>{const t=setTimeout(()=>showStep(i),300+i*STEP);timers.push(t);});}
+function togglePause(){
+  if(!paused){paused=true;timers.forEach(t=>clearTimeout(t));timers=[];pauseBtn.textContent='▶ Continuar';}
+  else{paused=false;pauseBtn.textContent='⏸ Pausar';stages.slice(currentStep+1).forEach((id,j)=>{const t=setTimeout(()=>showStep(currentStep+1+j),500+j*STEP);timers.push(t);});}
+}
+function stepBack(){timers.forEach(t=>clearTimeout(t));timers=[];paused=true;pauseBtn.textContent='▶ Continuar';showStep(Math.max(0,currentStep-1));}
+function stepNext(){timers.forEach(t=>clearTimeout(t));timers=[];paused=true;pauseBtn.textContent='▶ Continuar';showStep(Math.min(stages.length-1,currentStep+1));}
+function restart(){
+  timers.forEach(t=>clearTimeout(t));timers=[];paused=false;pauseBtn.textContent='⏸ Pausar';
+  stages.forEach(id=>document.getElementById(id).classList.remove('visible'));
+  conns.forEach(id=>document.getElementById(id).classList.remove('visible'));
+  prog.style.width='0%';speechBox.classList.remove('visible');currentStep=-1;
+  stepCounter.textContent='Etapa 1 de 6';setTimeout(animate,300);
+}
+animate();
+
+/* SECTION 2 — trigger on scroll */
+const moments=['m0','m1','m2'];
+const mconns=['mc0','mc1'];
+let funnelDone=false;
+function animateFunnel(){
+  if(funnelDone)return; funnelDone=true;
+  moments.forEach((id,i)=>{
+    setTimeout(()=>{
+      document.getElementById(id).classList.add('visible');
+      const mc=document.getElementById('mcard'+i);
+      mc.classList.add('active-pulse');setTimeout(()=>mc.classList.remove('active-pulse'),900);
+    },400+i*700);
+  });
+  mconns.forEach((id,i)=>setTimeout(()=>document.getElementById(id).classList.add('visible'),750+i*700));
+  setTimeout(()=>document.getElementById('insight').classList.add('visible'),2600);
+}
+const obs=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting)animateFunnel();});},{threshold:0.15});
+obs.observe(document.querySelector('.section2'));
+</script>
+</body>
+</html>

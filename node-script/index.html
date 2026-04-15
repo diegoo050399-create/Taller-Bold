@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marketing Operations — Bold Lead Processor</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{--bg:#0f1117;--card:#1a1d2e;--border:#2a2d3e;--sub:#8b8fa8;--accent:#e8315a;--green:#16a34a;--blue:#2563eb;--purple:#9333ea}
+  body{background:var(--bg);font-family:'Inter',system-ui,sans-serif;color:#f0f0f5;padding:40px 24px;min-height:100vh}
+
+  .bold-tag{display:inline-block;background:var(--accent);color:#fff;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 12px;border-radius:4px;margin-bottom:10px}
+  .header{text-align:center;margin-bottom:36px;opacity:0;transform:translateY(-12px);animation:fadeUp .5s .1s forwards}
+  .header h1{font-size:26px;font-weight:700;color:#fff;letter-spacing:-.4px;margin-bottom:5px}
+  .header p{font-size:13px;color:var(--sub)}
+
+  /* RULES PIPELINE */
+  .rules-wrap{max-width:1100px;margin:0 auto 40px}
+  .rules-title{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sub);margin-bottom:14px;text-align:center}
+  .rules-pipeline{display:flex;align-items:stretch;gap:0;width:100%}
+  .rule-block{flex:1;background:var(--card);border-radius:0;border:1.5px solid var(--border);padding:20px 16px;display:flex;flex-direction:column;gap:8px;opacity:0;transform:translateY(16px);transition:opacity .5s,transform .5s}
+  .rule-block:first-child{border-radius:12px 0 0 12px}
+  .rule-block:last-child{border-radius:0 12px 12px 0}
+  .rule-block.visible{opacity:1;transform:translateY(0)}
+  .rule-block:hover{background:#1e2235}
+  .rule-num{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px}
+  .rule-icon{font-size:24px;margin-bottom:4px}
+  .rule-name{font-size:13px;font-weight:700;color:#fff;line-height:1.3}
+  .rule-desc{font-size:11px;color:var(--sub);line-height:1.5}
+  .rule-code{font-family:'JetBrains Mono',monospace;font-size:10px;background:#0f1117;border-radius:6px;padding:6px 8px;color:#c8cce0;margin-top:4px;border-left:2px solid}
+  .rule-connector{display:flex;align-items:center;padding:0 2px;flex-shrink:0;padding-top:20px}
+  .rule-connector svg{width:16px;height:16px;fill:var(--sub)}
+
+  .r1{border-color:#e8315a}.r1 .rule-num{color:#f87171}.r1 .rule-code{border-color:#e8315a}
+  .r2{border-color:#2563eb}.r2 .rule-num{color:#93c5fd}.r2 .rule-code{border-color:#2563eb}
+  .r3{border-color:#9333ea}.r3 .rule-num{color:#c4b5fd}.r3 .rule-code{border-color:#9333ea}
+  .r4{border-color:#16a34a}.r4 .rule-num{color:#86efac}.r4 .rule-code{border-color:#16a34a}
+
+  /* RESULTS + FLOW */
+  .bottom-wrap{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+
+  .section-card{background:var(--card);border-radius:14px;border:1.5px solid var(--border);overflow:hidden;opacity:0;transform:translateY(16px);transition:opacity .5s,transform .5s}
+  .section-card.visible{opacity:1;transform:translateY(0)}
+  .section-header{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+  .section-header-title{font-size:12px;font-weight:700;color:#fff;letter-spacing:.02em}
+  .section-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+  /* TABLE */
+  .leads-table{width:100%;border-collapse:collapse}
+  .leads-table th{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--sub);padding:10px 16px;text-align:left;border-bottom:1px solid var(--border)}
+  .leads-table td{font-size:12px;padding:10px 16px;border-bottom:1px solid #1e2235;vertical-align:middle}
+  .leads-table tr:last-child td{border-bottom:none}
+  .leads-table tr:hover td{background:#1e2235}
+  .status-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;border-radius:20px;padding:2px 8px;letter-spacing:.04em}
+  .status-ok{background:#052e16;color:#86efac;border:1px solid #16a34a}
+  .status-rej{background:#2d0a0a;color:#fca5a5;border:1px solid #e8315a}
+  .tier-pill{font-size:10px;font-weight:700;border-radius:4px;padding:2px 7px;font-family:'JetBrains Mono',monospace}
+  .t1{background:#052e16;color:#86efac}
+  .t2{background:#0d1b4b;color:#93c5fd}
+  .t3{background:#2e1065;color:#c4b5fd}
+  .sync-icon{font-size:13px}
+  .fee-val{font-family:'JetBrains Mono',monospace;font-size:11px;color:#c8cce0}
+
+  /* FLOW */
+  .flow-wrap{padding:20px}
+  .flow-step{display:flex;align-items:flex-start;gap:14px;margin-bottom:16px}
+  .flow-step:last-child{margin-bottom:0}
+  .flow-left{display:flex;flex-direction:column;align-items:center;flex-shrink:0}
+  .flow-circle{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;border:2px solid}
+  .flow-line{width:2px;flex:1;min-height:20px;margin:4px auto}
+  .flow-body{flex:1;padding-top:6px}
+  .flow-name{font-size:13px;font-weight:700;color:#fff;margin-bottom:3px}
+  .flow-desc{font-size:11px;color:var(--sub);line-height:1.5}
+  .flow-tag{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:4px;padding:2px 7px;margin-top:5px;font-family:'JetBrains Mono',monospace}
+
+  .f1 .flow-circle{background:#0c1a2e;border-color:#185FA5;color:#85B7EB}
+  .f1 .flow-line{background:linear-gradient(#185FA5,#534AB7)}
+  .f1 .flow-tag{background:#0c1a2e;color:#85B7EB;border:1px solid #185FA5}
+
+  .f2 .flow-circle{background:#1a0a0d;border-color:#e8315a;color:#fca5a5}
+  .f2 .flow-line{background:linear-gradient(#e8315a,#9333ea)}
+  .f2 .flow-tag{background:#1a0a0d;color:#fca5a5;border:1px solid #e8315a}
+
+  .f3 .flow-circle{background:#131028;border-color:#9333ea;color:#c4b5fd}
+  .f3 .flow-line{background:linear-gradient(#9333ea,#16a34a)}
+  .f3 .flow-tag{background:#131028;color:#c4b5fd;border:1px solid #9333ea}
+
+  .f4 .flow-circle{background:#052e16;border-color:#16a34a;color:#86efac}
+  .f4 .flow-tag{background:#052e16;color:#86efac;border:1px solid #16a34a}
+
+  /* FOOTER */
+  .footer-note{max-width:1100px;margin:20px auto 0;background:#1a1d2e;border:1px solid #2a2d3e;border-radius:12px;padding:14px 20px;display:flex;align-items:center;gap:12px;opacity:0;animation:fadeUp .5s 1.2s forwards}
+  .footer-note-icon{font-size:18px;flex-shrink:0}
+  .footer-note-text{font-size:12px;color:var(--sub);line-height:1.6}
+  .footer-note-text strong{color:#c8cce0}
+  .made-by{text-align:center;margin-top:20px;font-size:11px;color:#3a3d55;opacity:0;animation:fadeUp .5s 1.4s forwards}
+
+  @keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(232,49,90,.3)}50%{box-shadow:0 0 0 8px rgba(232,49,90,0)}}
+</style>
+</head>
+<body>
+
+<div style="text-align:center">
+  <div class="bold-tag">Bold · Parte 3 · Marketing Operations</div>
+</div>
+<div class="header">
+  <h1>Lead Processor — De WhatsApp al CRM</h1>
+  <p>Script Node.js · 4 reglas de negocio · Scoring TIER · Webhook n8n</p>
+</div>
+
+<!-- RULES PIPELINE -->
+<div class="rules-wrap">
+  <div class="rules-title">4 reglas de negocio aplicadas en secuencia</div>
+  <div class="rules-pipeline">
+
+    <div class="rule-block r1" id="r0">
+      <div class="rule-num">Regla 01</div>
+      <div class="rule-icon">🛡️</div>
+      <div class="rule-name">Validación de datos</div>
+      <div class="rule-desc">Si el lead no tiene teléfono o email es marcado como REJECTED y no entra al pipeline.</div>
+      <div class="rule-code">if (!phone || !email)<br>→ status: "REJECTED"</div>
+    </div>
+
+    <div class="rule-connector"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+
+    <div class="rule-block r2" id="r1">
+      <div class="rule-num">Regla 02</div>
+      <div class="rule-icon">💰</div>
+      <div class="rule-name">Cálculo de potencial</div>
+      <div class="rule-desc">Se calcula el fee revenue estimado que Bold generaría mensualmente con este comercio.</div>
+      <div class="rule-code">monthly_sales × 2.99%<br>→ estimated_fee_revenue</div>
+    </div>
+
+    <div class="rule-connector"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+
+    <div class="rule-block r3" id="r2">
+      <div class="rule-num">Regla 03</div>
+      <div class="rule-icon">🎯</div>
+      <div class="rule-name">Scoring y clasificación</div>
+      <div class="rule-desc">El lead es clasificado según su volumen de ventas mensuales en tres niveles de prioridad.</div>
+      <div class="rule-code">+$10M → TIER_1<br>$5-10M → TIER_2<br>-$5M → TIER_3</div>
+    </div>
+
+    <div class="rule-connector"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+
+    <div class="rule-block r4" id="r3">
+      <div class="rule-num">Regla 04</div>
+      <div class="rule-icon">📤</div>
+      <div class="rule-name">Formateo para CRM</div>
+      <div class="rule-desc">Output limpio con campos normalizados. Solo TIER_1 y TIER_2 tienen ready_to_sync: true.</div>
+      <div class="rule-code">nombre_comercio (UPPER)<br>ready_to_sync: boolean</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- RESULTS + FLOW -->
+<div class="bottom-wrap">
+
+  <div class="section-card" id="sc0">
+    <div class="section-header">
+      <div class="section-dot" style="background:#16a34a"></div>
+      <div class="section-header-title">Resultado del procesamiento</div>
+    </div>
+    <table class="leads-table">
+      <thead>
+        <tr>
+          <th>Comercio</th>
+          <th>Estado</th>
+          <th>Priority</th>
+          <th>Fee/mes</th>
+          <th>Sync</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="font-weight:600;color:#fff;font-size:11px">PANADERÍA DON JULIO</td>
+          <td><span class="status-badge status-ok">✓ Procesado</span></td>
+          <td><span class="tier-pill t1">TIER_1</span></td>
+          <td><span class="fee-val">$358.800</span></td>
+          <td><span class="sync-icon">🟢</span></td>
+        </tr>
+        <tr>
+          <td style="font-weight:600;color:#fff;font-size:11px">FERRETERÍA EL MARTILLO</td>
+          <td><span class="status-badge status-rej">✗ Rejected</span></td>
+          <td><span style="color:var(--sub);font-size:11px">—</span></td>
+          <td><span style="color:var(--sub);font-size:11px">—</span></td>
+          <td><span class="sync-icon">🔴</span></td>
+        </tr>
+        <tr>
+          <td style="font-weight:600;color:#fff;font-size:11px">TIENDA DE ROPA XYZ</td>
+          <td><span class="status-badge status-rej">✗ Rejected</span></td>
+          <td><span style="color:var(--sub);font-size:11px">—</span></td>
+          <td><span style="color:var(--sub);font-size:11px">—</span></td>
+          <td><span class="sync-icon">🔴</span></td>
+        </tr>
+        <tr>
+          <td style="font-weight:600;color:#fff;font-size:11px">RESTAURANTE GOURMET</td>
+          <td><span class="status-badge status-ok">✓ Procesado</span></td>
+          <td><span class="tier-pill t2">TIER_2</span></td>
+          <td><span class="fee-val">$194.350</span></td>
+          <td><span class="sync-icon">🟢</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section-card" id="sc1">
+    <div class="section-header">
+      <div class="section-dot" style="background:#534AB7"></div>
+      <div class="section-header-title">Flujo de integración end-to-end</div>
+    </div>
+    <div class="flow-wrap">
+
+      <div class="flow-step f1">
+        <div class="flow-left">
+          <div class="flow-circle">💬</div>
+          <div class="flow-line"></div>
+        </div>
+        <div class="flow-body">
+          <div class="flow-name">Boldbot WhatsApp</div>
+          <div class="flow-desc">Recolecta datos del comerciante vía conversación: nombre, teléfono, email y ventas mensuales.</div>
+          <div class="flow-tag">contact_started → lead_qualified</div>
+        </div>
+      </div>
+
+      <div class="flow-step f2">
+        <div class="flow-left">
+          <div class="flow-circle">⚙️</div>
+          <div class="flow-line"></div>
+        </div>
+        <div class="flow-body">
+          <div class="flow-name">Node.js Processor</div>
+          <div class="flow-desc">Valida, calcula fee revenue, asigna TIER y formatea el objeto para el CRM.</div>
+          <div class="flow-tag">purchase_intent → processing</div>
+        </div>
+      </div>
+
+      <div class="flow-step f3">
+        <div class="flow-left">
+          <div class="flow-circle">🔗</div>
+          <div class="flow-line"></div>
+        </div>
+        <div class="flow-body">
+          <div class="flow-name">n8n Webhook</div>
+          <div class="flow-desc">Recibe el payload procesado y enruta TIER_1 y TIER_2 al CRM. TIER_3 va a nurturing automático.</div>
+          <div class="flow-tag">ready_to_sync: true → CRM</div>
+        </div>
+      </div>
+
+      <div class="flow-step f4">
+        <div class="flow-left">
+          <div class="flow-circle">🗂️</div>
+        </div>
+        <div class="flow-body">
+          <div class="flow-name">CRM — Lead listo</div>
+          <div class="flow-desc">El equipo comercial recibe el lead clasificado con fee revenue estimado y prioridad asignada. Solo prioriza y llama.</div>
+          <div class="flow-tag">lead_crm_synced</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<div class="footer-note">
+  <div class="footer-note-icon">💡</div>
+  <div class="footer-note-text">
+    <strong>Fee revenue total estimado de leads procesados: $553.150 COP/mes</strong> ·
+    Comisión Bold 2.99% · Solo leads con <strong>ready_to_sync: true</strong> son enviados al CRM ·
+    TIER_3 entra a flujo de nurturing automatizado vía n8n
+  </div>
+</div>
+
+<div class="made-by">Juan Diego Rodríguez · Bold Case Study · Marketing IA Trainer</div>
+
+<script>
+const rules = ['r0','r1','r2','r3'];
+const cards = ['sc0','sc1'];
+const rDelays = [300,600,900,1200];
+const cDelays = [1400,1600];
+
+rules.forEach((id,i) => {
+  setTimeout(() => document.getElementById(id).classList.add('visible'), rDelays[i]);
+});
+cards.forEach((id,i) => {
+  setTimeout(() => document.getElementById(id).classList.add('visible'), cDelays[i]);
+});
+</script>
+</body>
+</html>

@@ -463,7 +463,7 @@ window.onload = async () => {
     document.getElementById("bot-status").textContent = "en línea";
 
     const welcomeMsg = data.reply ||
-      "¡Hola! Soy Boldbot, el asesor de Bold Colombia 👋\n\nMi objetivo es ayudarte a hacer crecer tu negocio con las mejores soluciones de pagos y servicios financieros.\n\nCuéntame, ¿qué tipo de negocio tienes?";
+      "¡Hola! Soy Boldbot, el asesor de Bold Colombia 👋\n\nEstoy aquí para ayudarte a hacer crecer tu negocio con pagos, financiamiento y más.\n\n¿Cuál es tu nombre?";
 
     addBotMessage(welcomeMsg);
     state.messages.push({ role: "assistant", content: welcomeMsg });

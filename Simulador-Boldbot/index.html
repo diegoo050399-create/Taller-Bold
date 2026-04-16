@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Boldbot — Simulador de Ventas WhatsApp</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap');
 
   *{box-sizing:border-box;margin:0;padding:0}
   :root{
@@ -319,12 +319,252 @@
   .prog-dot.done{background:var(--wa-green)}
   .prog-dot.active{background:var(--wa-header);animation:pulse-dot .8s infinite}
 
+  /* ── MODAL / POP-UP ── */
+  .modal-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(15,30,35,.75);
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:1000;
+    padding:20px;
+    opacity:0;
+    animation:overlayIn .4s forwards;
+  }
+  .modal-overlay.closing{
+    animation:overlayOut .3s forwards;
+  }
+
+  .modal-card{
+    background:#fff;
+    border-radius:16px;
+    max-width:440px;
+    width:100%;
+    overflow:hidden;
+    box-shadow:0 20px 60px rgba(0,0,0,.3);
+    transform:scale(.9) translateY(20px);
+    opacity:0;
+    animation:modalIn .45s .1s cubic-bezier(.34,1.56,.64,1) forwards;
+  }
+  .modal-card.closing{
+    animation:modalOut .25s forwards;
+  }
+
+  .modal-hero{
+    background:linear-gradient(135deg,var(--wa-header) 0%,var(--wa-header-2) 100%);
+    padding:28px 24px 24px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+  }
+  .modal-hero::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    opacity:.6;
+  }
+  .modal-icon{
+    position:relative;
+    width:68px;
+    height:68px;
+    border-radius:50%;
+    background:rgba(255,255,255,.15);
+    border:2px solid rgba(255,255,255,.3);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:0 auto 14px;
+    font-size:34px;
+    animation:iconPulse 2s ease-in-out infinite;
+  }
+  .modal-title{
+    position:relative;
+    color:#fff;
+    font-size:20px;
+    font-weight:800;
+    letter-spacing:-.3px;
+    margin-bottom:6px;
+  }
+  .modal-subtitle{
+    position:relative;
+    color:rgba(255,255,255,.85);
+    font-size:13px;
+    font-weight:500;
+  }
+
+  .modal-body{
+    padding:24px 24px 20px;
+  }
+  .modal-text{
+    font-size:14px;
+    line-height:1.6;
+    color:#41525d;
+    margin-bottom:16px;
+  }
+  .modal-text strong{
+    color:#111b21;
+    font-weight:700;
+  }
+
+  .modal-info-box{
+    background:linear-gradient(135deg,#fff8e1 0%,#fff4d1 100%);
+    border-left:3px solid #f59e0b;
+    border-radius:8px;
+    padding:12px 14px;
+    margin-bottom:20px;
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+  }
+  .modal-info-icon{
+    font-size:18px;
+    flex-shrink:0;
+    margin-top:1px;
+  }
+  .modal-info-text{
+    font-size:12.5px;
+    line-height:1.55;
+    color:#78350f;
+  }
+  .modal-info-text strong{color:#451a03;font-weight:700}
+
+  .modal-features{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    margin-bottom:22px;
+  }
+  .modal-feature{
+    background:#f0f2f5;
+    padding:10px 12px;
+    border-radius:8px;
+    text-align:center;
+  }
+  .modal-feature-num{
+    font-size:16px;
+    font-weight:800;
+    color:var(--wa-header);
+    letter-spacing:-.3px;
+  }
+  .modal-feature-label{
+    font-size:10.5px;
+    color:#667781;
+    font-weight:600;
+    margin-top:2px;
+    letter-spacing:.02em;
+  }
+
+  .modal-btn{
+    width:100%;
+    background:var(--wa-header);
+    color:#fff;
+    border:none;
+    padding:14px;
+    border-radius:10px;
+    font-size:14px;
+    font-weight:700;
+    font-family:'Nunito',sans-serif;
+    letter-spacing:.3px;
+    cursor:pointer;
+    transition:all .2s;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+  }
+  .modal-btn:hover{
+    background:var(--wa-header-2);
+    transform:translateY(-1px);
+    box-shadow:0 6px 16px rgba(7,94,84,.3);
+  }
+  .modal-btn:active{transform:translateY(0)}
+  .modal-btn svg{width:16px;height:16px;fill:#fff}
+
+  .modal-footer{
+    text-align:center;
+    margin-top:12px;
+    font-size:11px;
+    color:#8696a0;
+  }
+
+  @keyframes overlayIn{to{opacity:1}}
+  @keyframes overlayOut{to{opacity:0}}
+  @keyframes modalIn{to{opacity:1;transform:scale(1) translateY(0)}}
+  @keyframes modalOut{to{opacity:0;transform:scale(.95) translateY(10px)}}
+  @keyframes iconPulse{
+    0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(255,255,255,.3)}
+    50%{transform:scale(1.05);box-shadow:0 0 0 12px rgba(255,255,255,0)}
+  }
   @keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
   @keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
   @keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.4}}
+
+  @media (max-width:480px){
+    .modal-card{max-width:100%}
+    .modal-hero{padding:24px 20px 20px}
+    .modal-body{padding:20px 20px 18px}
+    .modal-title{font-size:18px}
+    .modal-features{grid-template-columns:1fr 1fr}
+  }
 </style>
 </head>
 <body>
+
+<!-- ── MODAL POP-UP ── -->
+<div class="modal-overlay" id="welcome-modal">
+  <div class="modal-card" id="welcome-modal-card">
+    <div class="modal-hero">
+      <div class="modal-icon">⚡</div>
+      <div class="modal-title">Antes de comenzar</div>
+      <div class="modal-subtitle">Información importante sobre tu experiencia</div>
+    </div>
+
+    <div class="modal-body">
+      <p class="modal-text">
+        Este simulador se ejecuta sobre <strong>n8n</strong> usando el plan gratuito de <strong>agentes IA</strong>, el cual incluye una cantidad limitada de <strong>tokens mensuales</strong>.
+      </p>
+
+      <div class="modal-info-box">
+        <div class="modal-info-icon">⚠️</div>
+        <div class="modal-info-text">
+          La calidad y continuidad de la conversación dependen de los <strong>tokens disponibles</strong>. Si se agotan, Boldbot puede responder con demoras o dejar de responder hasta la siguiente recarga del ciclo.
+        </div>
+      </div>
+
+      <div class="modal-features">
+        <div class="modal-feature">
+          <div class="modal-feature-num">🤖</div>
+          <div class="modal-feature-label">IA EN TIEMPO REAL</div>
+        </div>
+        <div class="modal-feature">
+          <div class="modal-feature-num">🔗</div>
+          <div class="modal-feature-label">CONECTADO A N8N</div>
+        </div>
+        <div class="modal-feature">
+          <div class="modal-feature-num">📊</div>
+          <div class="modal-feature-label">CALIFICA LEADS</div>
+        </div>
+        <div class="modal-feature">
+          <div class="modal-feature-num">🎯</div>
+          <div class="modal-feature-label">3 TIERS AUTO</div>
+        </div>
+      </div>
+
+      <button class="modal-btn" onclick="closeModal()">
+        Entendido, iniciar conversación
+        <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+      </button>
+
+      <div class="modal-footer">
+        Tu sesión comenzará al cerrar este aviso
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="app-title">
   <h1>Boldbot · Simulador de Ventas WhatsApp</h1>
@@ -434,11 +674,30 @@ const state = {
     telefono: null, email: null, ventas: null
   },
   isTyping: false,
-  initialized: false
+  initialized: false,
+  modalClosed: false
 };
 
+// ── MODAL ────────────────────────────────────────────────────
+function closeModal() {
+  const overlay = document.getElementById("welcome-modal");
+  const card = document.getElementById("welcome-modal-card");
+  overlay.classList.add("closing");
+  card.classList.add("closing");
+  setTimeout(() => {
+    overlay.style.display = "none";
+    state.modalClosed = true;
+    initChat();
+  }, 300);
+}
+
+// Cerrar modal con Escape
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && !state.modalClosed) closeModal();
+});
+
 // ── INICIALIZACIÓN — saludo viene de n8n ─────────────────────
-window.onload = async () => {
+async function initChat() {
   showTyping(true);
   document.getElementById("bot-status").textContent = "escribiendo...";
   updateProgress(0);
@@ -481,7 +740,7 @@ window.onload = async () => {
     state.messages.push({ role: "assistant", content: fallback });
     state.initialized = true;
   }
-};
+}
 
 // ── ENVIAR MENSAJE ───────────────────────────────────────────
 async function sendMessage() {

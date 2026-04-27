@@ -26,495 +26,145 @@
     --tier3:#9333ea;
   }
 
-  body{
-    font-family:'Nunito',sans-serif;
-    background:#f0f2f5;
-    min-height:100vh;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-  }
-
-  .app-title{
-    text-align:center;
-    margin-bottom:16px;
-    opacity:0;
-    animation:fadeUp .5s .1s forwards;
-  }
+  body{font-family:'Nunito',sans-serif;background:#f0f2f5;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;}
+  .app-title{text-align:center;margin-bottom:16px;opacity:0;animation:fadeUp .5s .1s forwards;}
   .app-title h1{font-size:15px;font-weight:700;color:#41525d;letter-spacing:.3px}
   .app-title p{font-size:12px;color:#8696a0;margin-top:2px}
-
-  .main-layout{
-    display:flex;
-    gap:16px;
-    width:100%;
-    max-width:960px;
-    align-items:flex-start;
-    opacity:0;
-    animation:fadeUp .5s .2s forwards;
-  }
-
-  /* ── CHAT WINDOW ── */
-  .chat-window{
-    flex:1;
-    background:#fff;
-    border-radius:12px;
-    overflow:hidden;
-    box-shadow:0 4px 24px rgba(0,0,0,.12);
-    display:flex;
-    flex-direction:column;
-    height:600px;
-  }
-
-  .chat-header{
-    background:var(--wa-header);
-    padding:10px 16px;
-    display:flex;
-    align-items:center;
-    gap:12px;
-    flex-shrink:0;
-  }
-  .chat-avatar{
-    width:40px;height:40px;border-radius:50%;
-    background:var(--wa-green);
-    display:flex;align-items:center;justify-content:center;
-    font-size:18px;flex-shrink:0;
-  }
+  .main-layout{display:flex;gap:16px;width:100%;max-width:960px;align-items:flex-start;opacity:0;animation:fadeUp .5s .2s forwards;}
+  .chat-window{flex:1;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.12);display:flex;flex-direction:column;height:600px;}
+  .chat-header{background:var(--wa-header);padding:10px 16px;display:flex;align-items:center;gap:12px;flex-shrink:0;}
+  .chat-avatar{width:40px;height:40px;border-radius:50%;background:var(--wa-green);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
   .chat-header-info{flex:1}
   .chat-header-name{font-size:15px;font-weight:600;color:#fff}
   .chat-header-status{font-size:11px;color:rgba(255,255,255,.7);margin-top:1px}
   .chat-header-dots{display:flex;gap:4px}
   .chat-header-dots span{width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.6)}
-
-  .chat-bg{
-    flex:1;
-    overflow-y:auto;
-    padding:16px 12px;
-    background:var(--wa-bg);
-    background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4d0c8' fill-opacity='0.15'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    display:flex;
-    flex-direction:column;
-    gap:6px;
-  }
+  .chat-bg{flex:1;overflow-y:auto;padding:16px 12px;background:var(--wa-bg);background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4d0c8' fill-opacity='0.15'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");display:flex;flex-direction:column;gap:6px;}
   .chat-bg::-webkit-scrollbar{width:4px}
   .chat-bg::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:2px}
-
   .msg-row{display:flex;margin-bottom:2px}
   .msg-row.out{justify-content:flex-end}
   .msg-row.in{justify-content:flex-start}
-
-  .bubble{
-    max-width:72%;
-    padding:7px 10px 4px;
-    border-radius:8px;
-    font-size:13.5px;
-    line-height:1.5;
-    position:relative;
-    word-break:break-word;
-  }
-  .bubble.out{
-    background:var(--wa-bubble-out);
-    color:var(--wa-text);
-    border-bottom-right-radius:2px;
-  }
-  .bubble.in{
-    background:var(--wa-bubble-in);
-    color:var(--wa-text);
-    border-bottom-left-radius:2px;
-    box-shadow:0 1px 2px rgba(0,0,0,.08);
-  }
-  .bubble-time{
-    font-size:10px;
-    color:var(--wa-sub);
-    text-align:right;
-    margin-top:2px;
-    display:flex;
-    align-items:center;
-    justify-content:flex-end;
-    gap:3px;
-  }
+  .bubble{max-width:72%;padding:7px 10px 4px;border-radius:8px;font-size:13.5px;line-height:1.5;position:relative;word-break:break-word;}
+  .bubble.out{background:var(--wa-bubble-out);color:var(--wa-text);border-bottom-right-radius:2px;}
+  .bubble.in{background:var(--wa-bubble-in);color:var(--wa-text);border-bottom-left-radius:2px;box-shadow:0 1px 2px rgba(0,0,0,.08);}
+  .bubble-time{font-size:10px;color:var(--wa-sub);text-align:right;margin-top:2px;display:flex;align-items:center;justify-content:flex-end;gap:3px;}
   .bubble-time.in{justify-content:flex-end}
   .check{color:#53bdeb;font-size:12px}
-
-  .typing{
-    display:none;
-    align-items:center;
-    gap:4px;
-    padding:10px 14px;
-    background:var(--wa-bubble-in);
-    border-radius:8px;
-    border-bottom-left-radius:2px;
-    width:fit-content;
-    box-shadow:0 1px 2px rgba(0,0,0,.08);
-  }
+  .typing{display:none;align-items:center;gap:4px;padding:10px 14px;background:var(--wa-bubble-in);border-radius:8px;border-bottom-left-radius:2px;width:fit-content;box-shadow:0 1px 2px rgba(0,0,0,.08);}
   .typing.visible{display:flex}
-  .typing span{
-    width:7px;height:7px;border-radius:50%;
-    background:#8696a0;
-    animation:bounce 1.2s infinite;
-  }
+  .typing span{width:7px;height:7px;border-radius:50%;background:#8696a0;animation:bounce 1.2s infinite;}
   .typing span:nth-child(2){animation-delay:.2s}
   .typing span:nth-child(3){animation-delay:.4s}
-
-  .date-divider{
-    text-align:center;
-    margin:8px 0;
-  }
-  .date-divider span{
-    background:rgba(255,255,255,.85);
-    color:#667781;
-    font-size:11px;
-    font-weight:600;
-    padding:4px 12px;
-    border-radius:8px;
-    box-shadow:0 1px 2px rgba(0,0,0,.08);
-  }
-
-  .chat-input-area{
-    background:#f0f2f5;
-    padding:8px 12px;
-    display:flex;
-    align-items:center;
-    gap:8px;
-    flex-shrink:0;
-    border-top:1px solid var(--wa-border);
-  }
-  .chat-input{
-    flex:1;
-    background:#fff;
-    border:none;
-    border-radius:24px;
-    padding:9px 16px;
-    font-size:14px;
-    font-family:'Nunito',sans-serif;
-    color:var(--wa-text);
-    outline:none;
-    box-shadow:0 1px 3px rgba(0,0,0,.08);
-  }
+  .date-divider{text-align:center;margin:8px 0;}
+  .date-divider span{background:rgba(255,255,255,.85);color:#667781;font-size:11px;font-weight:600;padding:4px 12px;border-radius:8px;box-shadow:0 1px 2px rgba(0,0,0,.08);}
+  .chat-input-area{background:#f0f2f5;padding:8px 12px;display:flex;align-items:center;gap:8px;flex-shrink:0;border-top:1px solid var(--wa-border);}
+  .chat-input{flex:1;background:#fff;border:none;border-radius:24px;padding:9px 16px;font-size:14px;font-family:'Nunito',sans-serif;color:var(--wa-text);outline:none;box-shadow:0 1px 3px rgba(0,0,0,.08);}
   .chat-input::placeholder{color:#8696a0}
-  .send-btn{
-    width:42px;height:42px;border-radius:50%;
-    background:var(--wa-header);
-    border:none;cursor:pointer;
-    display:flex;align-items:center;justify-content:center;
-    transition:background .2s;flex-shrink:0;
-  }
+  .send-btn{width:42px;height:42px;border-radius:50%;background:var(--wa-header);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;flex-shrink:0;}
   .send-btn:hover{background:var(--wa-header-2)}
   .send-btn svg{width:20px;height:20px;fill:#fff}
-
-  /* ── PANEL LATERAL ── */
-  .side-panel{
-    width:280px;
-    flex-shrink:0;
-    display:flex;
-    flex-direction:column;
-    gap:12px;
-  }
-
-  .panel-card{
-    background:#fff;
-    border-radius:12px;
-    overflow:hidden;
-    box-shadow:0 2px 12px rgba(0,0,0,.08);
-  }
-  .panel-header{
-    background:var(--wa-header);
-    padding:12px 16px;
-    font-size:12px;
-    font-weight:700;
-    color:#fff;
-    letter-spacing:.04em;
-    text-transform:uppercase;
-    display:flex;
-    align-items:center;
-    gap:8px;
-  }
+  .side-panel{width:280px;flex-shrink:0;display:flex;flex-direction:column;gap:12px;}
+  .panel-card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.08);}
+  .panel-header{background:var(--wa-header);padding:12px 16px;font-size:12px;font-weight:700;color:#fff;letter-spacing:.04em;text-transform:uppercase;display:flex;align-items:center;gap:8px;}
   .panel-header svg{width:14px;height:14px;fill:#fff;opacity:.8}
   .panel-body{padding:16px}
-
-  .field-row{
-    display:flex;
-    flex-direction:column;
-    gap:3px;
-    margin-bottom:12px;
-  }
+  .field-row{display:flex;flex-direction:column;gap:3px;margin-bottom:12px;}
   .field-row:last-child{margin-bottom:0}
-  .field-label{
-    font-size:10px;font-weight:700;
-    letter-spacing:.06em;text-transform:uppercase;
-    color:#8696a0;
-  }
-  .field-value{
-    font-size:13px;font-weight:600;
-    color:#111b21;
-    min-height:20px;
-    transition:color .3s;
-  }
+  .field-label{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#8696a0;}
+  .field-value{font-size:13px;font-weight:600;color:#111b21;min-height:20px;transition:color .3s;}
   .field-value.empty{color:#c8d0d5;font-weight:400;font-style:italic}
   .field-value.filled{color:#111b21}
-  .field-dot{
-    display:inline-block;
-    width:7px;height:7px;border-radius:50%;
-    background:#e9edef;
-    margin-right:6px;
-    transition:background .3s;
-    vertical-align:middle;
-  }
+  .field-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#e9edef;margin-right:6px;transition:background .3s;vertical-align:middle;}
   .field-dot.active{background:var(--wa-green)}
 
-  .tier-card{
-    background:#fff;
-    border-radius:12px;
-    overflow:hidden;
-    box-shadow:0 2px 12px rgba(0,0,0,.08);
-    opacity:0;
-    transform:translateY(8px);
-    transition:opacity .4s,transform .4s;
+  /* FLASH ANIMATION cuando se captura un dato */
+  @keyframes flashField{
+    0%{background:#dcf8c6}
+    100%{background:transparent}
   }
+  .field-value.flash{animation:flashField .6s ease-out;}
+
+  .tier-card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.08);opacity:0;transform:translateY(8px);transition:opacity .4s,transform .4s;}
   .tier-card.visible{opacity:1;transform:translateY(0)}
-  .tier-badge{
-    padding:20px 16px;
-    text-align:center;
-  }
-  .tier-label{
-    font-size:10px;font-weight:700;letter-spacing:.1em;
-    text-transform:uppercase;color:#8696a0;margin-bottom:8px;
-  }
-  .tier-value{
-    font-size:32px;font-weight:800;letter-spacing:-.5px;
-    margin-bottom:4px;
-  }
+  .tier-badge{padding:20px 16px;text-align:center;}
+  .tier-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#8696a0;margin-bottom:8px;}
+  .tier-value{font-size:32px;font-weight:800;letter-spacing:-.5px;margin-bottom:4px;}
   .tier-desc{font-size:12px;color:#667781;line-height:1.5}
-  .tier-fee{
-    border-top:1px solid var(--wa-border);
-    padding:12px 16px;
-    text-align:center;
-  }
+  .tier-fee{border-top:1px solid var(--wa-border);padding:12px 16px;text-align:center;}
   .tier-fee-label{font-size:10px;color:#8696a0;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
   .tier-fee-value{font-size:18px;font-weight:800;color:#111b21;margin-top:3px}
-  .tier-sync{
-    padding:10px 16px;
-    background:#f0f2f5;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:6px;
-    font-size:11px;
-    font-weight:700;
-    letter-spacing:.04em;
-  }
+  .tier-sync{padding:10px 16px;background:#f0f2f5;display:flex;align-items:center;justify-content:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:.04em;}
   .sync-dot{width:8px;height:8px;border-radius:50%}
-
-  .progress-dots{
-    display:flex;gap:6px;justify-content:center;
-    padding:12px 16px;
-    border-top:1px solid var(--wa-border);
-  }
-  .prog-dot{
-    width:8px;height:8px;border-radius:50%;
-    background:#e9edef;transition:background .3s;
-  }
+  .progress-dots{display:flex;gap:6px;justify-content:center;padding:12px 16px;border-top:1px solid var(--wa-border);}
+  .prog-dot{width:8px;height:8px;border-radius:50%;background:#e9edef;transition:background .3s;}
   .prog-dot.done{background:var(--wa-green)}
   .prog-dot.active{background:var(--wa-header);animation:pulse-dot .8s infinite}
 
-  /* ── MODAL / POP-UP ── */
-  .modal-overlay{
-    position:fixed;
-    inset:0;
-    background:rgba(15,30,35,.75);
-    backdrop-filter:blur(8px);
-    -webkit-backdrop-filter:blur(8px);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    z-index:1000;
-    padding:20px;
-    opacity:0;
-    animation:overlayIn .4s forwards;
-  }
-  .modal-overlay.closing{
-    animation:overlayOut .3s forwards;
-  }
-
-  .modal-card{
-    background:#fff;
-    border-radius:16px;
-    max-width:440px;
-    width:100%;
-    overflow:hidden;
-    box-shadow:0 20px 60px rgba(0,0,0,.3);
-    transform:scale(.9) translateY(20px);
-    opacity:0;
-    animation:modalIn .45s .1s cubic-bezier(.34,1.56,.64,1) forwards;
-  }
-  .modal-card.closing{
-    animation:modalOut .25s forwards;
-  }
-
-  .modal-hero{
-    background:linear-gradient(135deg,var(--wa-header) 0%,var(--wa-header-2) 100%);
-    padding:28px 24px 24px;
-    text-align:center;
-    position:relative;
-    overflow:hidden;
-  }
-  .modal-hero::before{
-    content:"";
-    position:absolute;
-    inset:0;
-    background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    opacity:.6;
-  }
-  .modal-icon{
-    position:relative;
-    width:68px;
-    height:68px;
-    border-radius:50%;
-    background:rgba(255,255,255,.15);
-    border:2px solid rgba(255,255,255,.3);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    margin:0 auto 14px;
-    font-size:34px;
-    animation:iconPulse 2s ease-in-out infinite;
-  }
-  .modal-title{
-    position:relative;
-    color:#fff;
-    font-size:20px;
-    font-weight:800;
-    letter-spacing:-.3px;
-    margin-bottom:6px;
-  }
-  .modal-subtitle{
-    position:relative;
-    color:rgba(255,255,255,.85);
-    font-size:13px;
-    font-weight:500;
-  }
-
-  .modal-body{
-    padding:24px 24px 20px;
-  }
-  .modal-text{
-    font-size:14px;
-    line-height:1.6;
-    color:#41525d;
-    margin-bottom:16px;
-  }
-  .modal-text strong{
-    color:#111b21;
-    font-weight:700;
-  }
-
-  .modal-info-box{
-    background:linear-gradient(135deg,#fff8e1 0%,#fff4d1 100%);
-    border-left:3px solid #f59e0b;
-    border-radius:8px;
-    padding:12px 14px;
-    margin-bottom:20px;
-    display:flex;
-    gap:10px;
-    align-items:flex-start;
-  }
-  .modal-info-icon{
-    font-size:18px;
-    flex-shrink:0;
-    margin-top:1px;
-  }
-  .modal-info-text{
-    font-size:12.5px;
-    line-height:1.55;
-    color:#78350f;
-  }
-  .modal-info-text strong{color:#451a03;font-weight:700}
-
-  .modal-features{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:8px;
-    margin-bottom:22px;
-  }
-  .modal-feature{
-    background:#f0f2f5;
-    padding:10px 12px;
-    border-radius:8px;
-    text-align:center;
-  }
-  .modal-feature-num{
-    font-size:16px;
-    font-weight:800;
-    color:var(--wa-header);
-    letter-spacing:-.3px;
-  }
-  .modal-feature-label{
-    font-size:10.5px;
-    color:#667781;
-    font-weight:600;
-    margin-top:2px;
-    letter-spacing:.02em;
-  }
-
-  .modal-btn{
-    width:100%;
-    background:var(--wa-header);
-    color:#fff;
-    border:none;
-    padding:14px;
-    border-radius:10px;
-    font-size:14px;
-    font-weight:700;
+  /* DEBUG BADGE — visible solo en desarrollo */
+  .debug-badge{
+    position:fixed;bottom:12px;right:12px;
+    background:rgba(7,94,84,.9);
+    color:#fff;font-size:10px;font-weight:700;
+    padding:6px 10px;border-radius:8px;
     font-family:'Nunito',sans-serif;
-    letter-spacing:.3px;
-    cursor:pointer;
-    transition:all .2s;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:8px;
+    letter-spacing:.04em;
+    z-index:9999;
+    opacity:0;
+    transition:opacity .3s;
+    pointer-events:none;
   }
-  .modal-btn:hover{
-    background:var(--wa-header-2);
-    transform:translateY(-1px);
-    box-shadow:0 6px 16px rgba(7,94,84,.3);
-  }
+  .debug-badge.show{opacity:1}
+
+  /* MODAL */
+  .modal-overlay{position:fixed;inset:0;background:rgba(15,30,35,.75);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:1000;padding:20px;opacity:0;animation:overlayIn .4s forwards;}
+  .modal-overlay.closing{animation:overlayOut .3s forwards;}
+  .modal-card{background:#fff;border-radius:16px;max-width:440px;width:100%;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.3);transform:scale(.9) translateY(20px);opacity:0;animation:modalIn .45s .1s cubic-bezier(.34,1.56,.64,1) forwards;}
+  .modal-card.closing{animation:modalOut .25s forwards;}
+  .modal-hero{background:linear-gradient(135deg,var(--wa-header) 0%,var(--wa-header-2) 100%);padding:28px 24px 24px;text-align:center;position:relative;overflow:hidden;}
+  .modal-hero::before{content:"";position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");opacity:.6;}
+  .modal-icon{position:relative;width:68px;height:68px;border-radius:50%;background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:34px;animation:iconPulse 2s ease-in-out infinite;}
+  .modal-title{position:relative;color:#fff;font-size:20px;font-weight:800;letter-spacing:-.3px;margin-bottom:6px;}
+  .modal-subtitle{position:relative;color:rgba(255,255,255,.85);font-size:13px;font-weight:500;}
+  .modal-body{padding:24px 24px 20px;}
+  .modal-text{font-size:14px;line-height:1.6;color:#41525d;margin-bottom:16px;}
+  .modal-text strong{color:#111b21;font-weight:700;}
+  .modal-info-box{background:linear-gradient(135deg,#fff8e1 0%,#fff4d1 100%);border-left:3px solid #f59e0b;border-radius:8px;padding:12px 14px;margin-bottom:20px;display:flex;gap:10px;align-items:flex-start;}
+  .modal-info-icon{font-size:18px;flex-shrink:0;margin-top:1px;}
+  .modal-info-text{font-size:12.5px;line-height:1.55;color:#78350f;}
+  .modal-info-text strong{color:#451a03;font-weight:700}
+  .modal-features{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:22px;}
+  .modal-feature{background:#f0f2f5;padding:10px 12px;border-radius:8px;text-align:center;}
+  .modal-feature-num{font-size:16px;font-weight:800;color:var(--wa-header);letter-spacing:-.3px;}
+  .modal-feature-label{font-size:10.5px;color:#667781;font-weight:600;margin-top:2px;letter-spacing:.02em;}
+  .modal-btn{width:100%;background:var(--wa-header);color:#fff;border:none;padding:14px;border-radius:10px;font-size:14px;font-weight:700;font-family:'Nunito',sans-serif;letter-spacing:.3px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+  .modal-btn:hover{background:var(--wa-header-2);transform:translateY(-1px);box-shadow:0 6px 16px rgba(7,94,84,.3);}
   .modal-btn:active{transform:translateY(0)}
   .modal-btn svg{width:16px;height:16px;fill:#fff}
-
-  .modal-footer{
-    text-align:center;
-    margin-top:12px;
-    font-size:11px;
-    color:#8696a0;
-  }
+  .modal-footer{text-align:center;margin-top:12px;font-size:11px;color:#8696a0;}
 
   @keyframes overlayIn{to{opacity:1}}
   @keyframes overlayOut{to{opacity:0}}
   @keyframes modalIn{to{opacity:1;transform:scale(1) translateY(0)}}
   @keyframes modalOut{to{opacity:0;transform:scale(.95) translateY(10px)}}
-  @keyframes iconPulse{
-    0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(255,255,255,.3)}
-    50%{transform:scale(1.05);box-shadow:0 0 0 12px rgba(255,255,255,0)}
-  }
+  @keyframes iconPulse{0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(255,255,255,.3)}50%{transform:scale(1.05);box-shadow:0 0 0 12px rgba(255,255,255,0)}}
   @keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
   @keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
   @keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.4}}
 
-  @media (max-width:480px){
+  @media(max-width:480px){
     .modal-card{max-width:100%}
     .modal-hero{padding:24px 20px 20px}
     .modal-body{padding:20px 20px 18px}
     .modal-title{font-size:18px}
-    .modal-features{grid-template-columns:1fr 1fr}
   }
 </style>
 </head>
 <body>
 
-<!-- ── MODAL POP-UP ── -->
+<div class="debug-badge" id="debug-badge"></div>
+
+<!-- MODAL -->
 <div class="modal-overlay" id="welcome-modal">
   <div class="modal-card" id="welcome-modal-card">
     <div class="modal-hero">
@@ -522,46 +172,23 @@
       <div class="modal-title">Antes de comenzar</div>
       <div class="modal-subtitle">Información importante sobre tu experiencia</div>
     </div>
-
     <div class="modal-body">
-      <p class="modal-text">
-        Este simulador se ejecuta sobre <strong>n8n</strong> usando el plan gratuito de <strong>agentes IA</strong>, el cual incluye una cantidad limitada de <strong>tokens mensuales</strong>.
-      </p>
-
+      <p class="modal-text">Este simulador se ejecuta sobre <strong>n8n</strong> usando el plan gratuito de <strong>agentes IA</strong>, el cual incluye una cantidad limitada de <strong>tokens mensuales</strong>.</p>
       <div class="modal-info-box">
         <div class="modal-info-icon">⚠️</div>
-        <div class="modal-info-text">
-          La calidad y continuidad de la conversación dependen de los <strong>tokens disponibles</strong>. Si se agotan, Boldbot puede responder con demoras o dejar de responder hasta la siguiente recarga del ciclo.
-        </div>
+        <div class="modal-info-text">La calidad y continuidad de la conversación dependen de los <strong>tokens disponibles</strong>. Si se agotan, Boldbot puede responder con demoras o dejar de responder hasta la siguiente recarga del ciclo.</div>
       </div>
-
       <div class="modal-features">
-        <div class="modal-feature">
-          <div class="modal-feature-num">🤖</div>
-          <div class="modal-feature-label">IA EN TIEMPO REAL</div>
-        </div>
-        <div class="modal-feature">
-          <div class="modal-feature-num">🔗</div>
-          <div class="modal-feature-label">CONECTADO A N8N</div>
-        </div>
-        <div class="modal-feature">
-          <div class="modal-feature-num">📊</div>
-          <div class="modal-feature-label">CALIFICA LEADS</div>
-        </div>
-        <div class="modal-feature">
-          <div class="modal-feature-num">🎯</div>
-          <div class="modal-feature-label">3 TIERS AUTO</div>
-        </div>
+        <div class="modal-feature"><div class="modal-feature-num">🤖</div><div class="modal-feature-label">IA EN TIEMPO REAL</div></div>
+        <div class="modal-feature"><div class="modal-feature-num">🔗</div><div class="modal-feature-label">CONECTADO A N8N</div></div>
+        <div class="modal-feature"><div class="modal-feature-num">📊</div><div class="modal-feature-label">CALIFICA LEADS</div></div>
+        <div class="modal-feature"><div class="modal-feature-num">🎯</div><div class="modal-feature-label">3 TIERS AUTO</div></div>
       </div>
-
       <button class="modal-btn" onclick="closeModal()">
         Entendido, iniciar conversación
         <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
       </button>
-
-      <div class="modal-footer">
-        Tu sesión comenzará al cerrar este aviso
-      </div>
+      <div class="modal-footer">Tu sesión comenzará al cerrar este aviso</div>
     </div>
   </div>
 </div>
@@ -572,8 +199,6 @@
 </div>
 
 <div class="main-layout">
-
-  <!-- CHAT -->
   <div class="chat-window">
     <div class="chat-header">
       <div class="chat-avatar">🤖</div>
@@ -583,16 +208,12 @@
       </div>
       <div class="chat-header-dots"><span></span><span></span><span></span></div>
     </div>
-
     <div class="chat-bg" id="chat-bg">
       <div class="date-divider"><span>Hoy</span></div>
       <div class="msg-row in" id="typing-row" style="display:none">
-        <div class="typing" id="typing-indicator">
-          <span></span><span></span><span></span>
-        </div>
+        <div class="typing" id="typing-indicator"><span></span><span></span><span></span></div>
       </div>
     </div>
-
     <div class="chat-input-area">
       <input class="chat-input" id="chat-input" type="text"
         placeholder="Escribe un mensaje..." autocomplete="off"
@@ -603,9 +224,7 @@
     </div>
   </div>
 
-  <!-- PANEL LATERAL -->
   <div class="side-panel">
-
     <div class="panel-card">
       <div class="panel-header">
         <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
@@ -657,7 +276,6 @@
         <span id="sync-label">—</span>
       </div>
     </div>
-
   </div>
 </div>
 
@@ -665,23 +283,21 @@
 // ── CONFIGURACIÓN ────────────────────────────────────────────
 const N8N_WEBHOOK_URL = "https://n8n.flexia-automatizaciones.cloud/webhook/boldbot-chat";
 
-// Estado de la conversación
 const state = {
   sessionId: "session_" + Date.now(),
   messages: [],
-  capturedData: {
-    nombre: null, negocio: null,
-    telefono: null, email: null, ventas: null
-  },
+  capturedData: { nombre:null, negocio:null, telefono:null, email:null, ventas:null },
   isTyping: false,
   initialized: false,
-  modalClosed: false
+  modalClosed: false,
+  // Contexto acumulado para el parser local
+  conversationContext: []
 };
 
 // ── MODAL ────────────────────────────────────────────────────
 function closeModal() {
   const overlay = document.getElementById("welcome-modal");
-  const card = document.getElementById("welcome-modal-card");
+  const card    = document.getElementById("welcome-modal-card");
   overlay.classList.add("closing");
   card.classList.add("closing");
   setTimeout(() => {
@@ -690,13 +306,9 @@ function closeModal() {
     initChat();
   }, 300);
 }
+document.addEventListener("keydown", e => { if(e.key==="Escape" && !state.modalClosed) closeModal(); });
 
-// Cerrar modal con Escape
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape" && !state.modalClosed) closeModal();
-});
-
-// ── INICIALIZACIÓN — saludo viene de n8n ─────────────────────
+// ── INIT ─────────────────────────────────────────────────────
 async function initChat() {
   showTyping(true);
   document.getElementById("bot-status").textContent = "escribiendo...";
@@ -704,40 +316,33 @@ async function initChat() {
 
   try {
     const response = await fetch(N8N_WEBHOOK_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+      method:"POST", headers:{"Content-Type":"application/json"},
       body: JSON.stringify({
-        sessionId: state.sessionId,
-        message: "__INIT__",
-        history: [],
-        capturedData: state.capturedData,
-        isInit: true
+        sessionId: state.sessionId, message:"__INIT__",
+        history:[], capturedData: state.capturedData, isInit:true
       })
     });
-
-    if (!response.ok) throw new Error("init failed");
-
+    if(!response.ok) throw new Error("init failed");
     const data = await response.json();
     showTyping(false);
     document.getElementById("bot-status").textContent = "en línea";
 
     const welcomeMsg = data.reply ||
-      "¡Hola! Soy Boldbot, el asesor de Bold Colombia 👋\n\nEstoy aquí para ayudarte a hacer crecer tu negocio con pagos, financiamiento y más.\n\n¿Cuál es tu nombre?";
+      "¡Hola! Soy Boldbot, el asesor de Bold Colombia 👋\n\nEstoy aquí para ayudarte a hacer crecer tu negocio.\n\n¿Con quién tengo el gusto de hablar?";
 
     addBotMessage(welcomeMsg);
-    state.messages.push({ role: "assistant", content: welcomeMsg });
+    state.messages.push({ role:"assistant", content:welcomeMsg });
     state.initialized = true;
 
-    if (data.capturedData) updateCapturedData(data.capturedData);
-    if (data.tier)         showTier(data.tier, data.fee_revenue, data.ready_to_sync);
+    if(data.capturedData) updateCapturedData(data.capturedData);
+    if(data.tier)         showTier(data.tier, data.fee_revenue, data.ready_to_sync);
 
   } catch(e) {
     showTyping(false);
     document.getElementById("bot-status").textContent = "en línea";
-    // Saludo de respaldo si n8n no responde al init
-    const fallback = "¡Hola! Soy Boldbot, el asesor de Bold Colombia 👋\n\nEstoy aquí para ayudarte a hacer crecer tu negocio con pagos, financiamiento y más.\n\n¿Cuál es tu nombre?";
+    const fallback = "¡Hola! Soy Boldbot, el asesor de Bold Colombia 👋\n\nEstoy aquí para ayudarte a hacer crecer tu negocio con pagos, financiamiento y más.\n\n¿Con quién tengo el gusto de hablar?";
     addBotMessage(fallback);
-    state.messages.push({ role: "assistant", content: fallback });
+    state.messages.push({ role:"assistant", content:fallback });
     state.initialized = true;
   }
 }
@@ -746,70 +351,219 @@ async function initChat() {
 async function sendMessage() {
   const input = document.getElementById("chat-input");
   const text  = input.value.trim();
-  if (!text || state.isTyping || !state.initialized) return;
+  if(!text || state.isTyping || !state.initialized) return;
 
   input.value = "";
   addUserMessage(text);
-  state.messages.push({ role: "user", content: text });
+  state.messages.push({ role:"user", content:text });
+
+  // Guardar contexto para el parser local
+  // Recordamos cuál fue la última pregunta del bot
+  const lastBotMsg = [...state.messages].reverse().find(m => m.role === "assistant");
+  state.conversationContext.push({ question: lastBotMsg?.content || "", answer: text });
 
   showTyping(true);
   document.getElementById("bot-status").textContent = "escribiendo...";
 
   try {
     const response = await fetch(N8N_WEBHOOK_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+      method:"POST", headers:{"Content-Type":"application/json"},
       body: JSON.stringify({
-        sessionId:    state.sessionId,
-        message:      text,
-        history:      state.messages,
-        capturedData: state.capturedData,
-        isInit:       false
+        sessionId: state.sessionId, message:text,
+        history: state.messages, capturedData: state.capturedData, isInit:false
       })
     });
-
-    if (!response.ok) throw new Error("webhook error " + response.status);
+    if(!response.ok) throw new Error("webhook error " + response.status);
 
     const data = await response.json();
     showTyping(false);
     document.getElementById("bot-status").textContent = "en línea";
 
-    if (data.reply) {
+    if(data.reply) {
       addBotMessage(data.reply);
-      state.messages.push({ role: "assistant", content: data.reply });
+      state.messages.push({ role:"assistant", content:data.reply });
     }
 
-    if (data.capturedData) updateCapturedData(data.capturedData);
-    if (data.tier)         showTier(data.tier, data.fee_revenue, data.ready_to_sync);
+    // ── ESTRATEGIA DUAL: n8n primero, parser local de respaldo ──
+    if(data.capturedData && Object.values(data.capturedData).some(v => v)) {
+      // n8n envió datos estructurados → usarlos directamente
+      updateCapturedData(data.capturedData);
+      showDebug("✅ capturedData de n8n");
+    } else {
+      // n8n NO envió capturedData → parsear desde el texto del usuario + contexto
+      const parsed = parseDataFromConversation(text, state.conversationContext, lastBotMsg?.content || "");
+      if(parsed) {
+        updateCapturedData(parsed);
+        showDebug("🔍 parser local: " + JSON.stringify(parsed));
+      }
+    }
 
-    // Actualiza progreso según datos capturados
+    if(data.tier) showTier(data.tier, data.fee_revenue, data.ready_to_sync);
+
+    // Auto-detectar tier desde el reply si n8n no lo envía
+    if(!data.tier && data.reply) {
+      const autoTier = detectTierFromReply(data.reply);
+      if(autoTier) showTier(autoTier.tier, autoTier.fee, autoTier.sync);
+    }
+
     const filled = Object.values(state.capturedData).filter(v => v !== null).length;
     updateProgress(filled);
 
   } catch(error) {
     showTyping(false);
     document.getElementById("bot-status").textContent = "en línea";
+
+    // Aún así intentar parsear localmente
+    const lastBotMsg2 = [...state.messages].reverse().find(m => m.role === "assistant");
+    const parsed = parseDataFromConversation(text, state.conversationContext, lastBotMsg2?.content || "");
+    if(parsed) { updateCapturedData(parsed); showDebug("🔍 parser (offline): " + JSON.stringify(parsed)); }
+
     addBotMessage("Hubo un problema de conexión. ¿Puedes repetir tu mensaje?");
   }
+}
+
+// ── PARSER LOCAL — extrae datos del mensaje del usuario ──────
+// Lee la pregunta que hizo el bot y el texto que respondió el usuario
+function parseDataFromConversation(userText, context, lastBotQuestion) {
+  const result = {};
+  const q = lastBotQuestion.toLowerCase();
+  const t = userText.trim();
+
+  // --- NOMBRE ---
+  // El bot pregunta por nombre en la primera interacción
+  if(!state.capturedData.nombre && (
+    q.includes("nombre") || q.includes("quién") || q.includes("quien") ||
+    q.includes("con quién") || q.includes("hablar") || q.includes("¿cuál es tu nombre")
+  )) {
+    // Heurística: si la respuesta es corta (1-4 palabras) y no parece un número → es nombre
+    const words = t.split(/\s+/);
+    if(words.length >= 1 && words.length <= 5 && !/\d{5,}/.test(t) && !t.includes("@")) {
+      result.nombre = capitalizeWords(t);
+    }
+  }
+
+  // --- NEGOCIO / TIPO DE NEGOCIO ---
+  if(!state.capturedData.negocio && (
+    q.includes("negocio") || q.includes("empresa") || q.includes("comercio") ||
+    q.includes("vendes") || q.includes("tipo de negocio") || q.includes("qué haces") ||
+    q.includes("a qué") || q.includes("dedicas") || q.includes("actividad")
+  )) {
+    // No reutilizar el nombre ya capturado como negocio
+    const nombreActual = (state.capturedData.nombre || "").toLowerCase().trim();
+    const tNorm = t.toLowerCase().trim();
+    const esElMismoQueNombre = nombreActual && tNorm === nombreActual;
+
+    // Tampoco aceptar si suena a nombre propio (solo palabras capitalizables, sin verbos ni sustantivos de negocio)
+    const tieneKeywordNegocio = /tienda|restaur|café|cafe|comercio|empresa|taller|salon|salón|drogueria|droguería|farmacia|ferretería|ferreteria|ropa|calzado|electronica|electrónica|servicio|agencia|constructora|transporte|panadería|panaderia|carnicería|carniceria|frutería|fruteria|papelería|papeleria|bar|hotel|clinica|clínica|gym|gimnasio|peluquer|estética|estetica|tecnolog|software|app|digital|market|venta|distribu|import|export|fabrica|fábrica|productor|consultor|contador|abogado|médico|medico|independiente|freelance|negocio|emprendimiento|startup/i.test(t);
+
+    // Aceptar si: no es el nombre, y (tiene keyword de negocio O es una frase descriptiva de más de 2 palabras)
+    const palabras = t.split(/\s+/).filter(p => p.length > 1);
+    if(t.length > 2 && t.length < 120 && !esElMismoQueNombre && (tieneKeywordNegocio || palabras.length >= 2)) {
+      result.negocio = capitalizeFirst(t);
+    }
+  }
+
+  // --- TELÉFONO ---
+  // Buscar en cualquier respuesta — número de 7-15 dígitos
+  if(!state.capturedData.telefono) {
+    const phoneMatch = t.replace(/[\s\-().+]/g, "").match(/\d{7,15}/);
+    if(phoneMatch) result.telefono = phoneMatch[0];
+  }
+
+  // --- EMAIL ---
+  if(!state.capturedData.email) {
+    const emailMatch = t.match(/[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}/);
+    if(emailMatch) result.email = emailMatch[0].toLowerCase();
+  }
+
+  // --- VENTAS MENSUALES ---
+  if(!state.capturedData.ventas && (
+    q.includes("vent") || q.includes("factura") || q.includes("ingreso") ||
+    q.includes("mensual") || q.includes("mes") || q.includes("cuánto") ||
+    q.includes("monto") || q.includes("millones") || q.includes("cifra")
+  )) {
+    // Buscar patrones: $5M, 5 millones, 10.000.000, 5000000, "entre X y Y"
+    const moneyPatterns = [
+      // $10M, $5M, 10M, 5M
+      { re: /\$?\s*(\d+(?:[.,]\d+)?)\s*[Mm](?:illones?)?/, fn: m => formatVentas(parseFloat(m[1].replace(",",".")) * 1_000_000) },
+      // $10.000.000 o $10,000,000
+      { re: /\$?\s*([\d.,]{5,})/, fn: m => {
+        const clean = m[1].replace(/\./g,"").replace(",",".");
+        const num = parseFloat(clean);
+        if(!isNaN(num) && num >= 100_000) return formatVentas(num);
+        return null;
+      }},
+      // "menos de 5 millones", "más de 10 millones"
+      { re: /(menos|más|mas)\s+de\s+(\d+)\s*[Mm]ill/i, fn: m => {
+        const prefix = m[1].toLowerCase().startsWith("men") ? "<" : ">";
+        return prefix + " $" + m[2] + "M/mes";
+      }},
+      // "entre 5 y 10 millones"
+      { re: /entre\s+(\d+)\s+y\s+(\d+)\s*[Mm]ill/i, fn: m => "$" + m[1] + "M–$" + m[2] + "M/mes" },
+    ];
+
+    for(const { re, fn } of moneyPatterns) {
+      const match = t.match(re);
+      if(match) {
+        const val = fn(match);
+        if(val) { result.ventas = val; break; }
+      }
+    }
+
+    // Si la pregunta es de ventas y el usuario responde con solo un número grande
+    if(!result.ventas) {
+      const bare = t.replace(/\s/g,"");
+      if(/^\d+$/.test(bare) && parseInt(bare) >= 100000) {
+        result.ventas = formatVentas(parseInt(bare));
+      }
+    }
+  }
+
+  return Object.keys(result).length > 0 ? result : null;
+}
+
+// ── AUTO-DETECTAR TIER DESDE EL TEXTO DEL BOT ───────────────
+function detectTierFromReply(reply) {
+  const r = reply.toLowerCase();
+  if(r.includes("tier 1") || r.includes("tier_1") || r.includes("prioridad alta") || r.includes("más de 10 millones") || r.includes("mayor a 10")) {
+    return { tier:"TIER_1", fee:500000, sync:true };
+  }
+  if(r.includes("tier 2") || r.includes("tier_2") || r.includes("prioridad media") || r.includes("entre 5") || r.includes("5 a 10")) {
+    return { tier:"TIER_2", fee:250000, sync:false };
+  }
+  if(r.includes("tier 3") || r.includes("tier_3") || r.includes("prioridad baja") || r.includes("menos de 5") || r.includes("menor a 5")) {
+    return { tier:"TIER_3", fee:100000, sync:false };
+  }
+  return null;
+}
+
+// ── HELPERS DE FORMATO ───────────────────────────────────────
+function formatVentas(num) {
+  if(num >= 1_000_000) return "$" + (num/1_000_000).toFixed(1).replace(".0","") + "M/mes";
+  return "$" + num.toLocaleString("es-CO") + "/mes";
+}
+function capitalizeWords(str) {
+  return str.replace(/\b\w/g, c => c.toUpperCase());
+}
+function capitalizeFirst(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 // ── UI HELPERS ───────────────────────────────────────────────
 function addUserMessage(text) {
   const chat = document.getElementById("chat-bg");
-  const time = getTime();
-  const row = document.createElement("div");
+  const row  = document.createElement("div");
   row.className = "msg-row out";
-  row.innerHTML = `<div class="bubble out">${escapeHtml(text)}<div class="bubble-time">${time} <span class="check">✓✓</span></div></div>`;
+  row.innerHTML = `<div class="bubble out">${escapeHtml(text)}<div class="bubble-time">${getTime()} <span class="check">✓✓</span></div></div>`;
   chat.insertBefore(row, document.getElementById("typing-row"));
   scrollToBottom();
 }
 
 function addBotMessage(text) {
   const chat = document.getElementById("chat-bg");
-  const time = getTime();
-  const row = document.createElement("div");
+  const row  = document.createElement("div");
   row.className = "msg-row in";
-  row.innerHTML = `<div class="bubble in">${escapeHtml(text).replace(/\n/g,"<br>")}<div class="bubble-time in">${time}</div></div>`;
+  row.innerHTML = `<div class="bubble in">${escapeHtml(text).replace(/\n/g,"<br>")}<div class="bubble-time in">${getTime()}</div></div>`;
   chat.insertBefore(row, document.getElementById("typing-row"));
   scrollToBottom();
 }
@@ -817,10 +571,10 @@ function addBotMessage(text) {
 function showTyping(show) {
   state.isTyping = show;
   const row = document.getElementById("typing-row");
-  const indicator = document.getElementById("typing-indicator");
+  const ind = document.getElementById("typing-indicator");
   row.style.display = show ? "flex" : "none";
-  indicator.classList.toggle("visible", show);
-  if (show) scrollToBottom();
+  ind.classList.toggle("visible", show);
+  if(show) scrollToBottom();
 }
 
 function scrollToBottom() {
@@ -836,53 +590,64 @@ function escapeHtml(text) {
   return text.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
 }
 
+function showDebug(msg) {
+  const badge = document.getElementById("debug-badge");
+  badge.textContent = msg;
+  badge.classList.add("show");
+  setTimeout(() => badge.classList.remove("show"), 3000);
+}
+
 // ── PANEL LATERAL ────────────────────────────────────────────
 function updateCapturedData(data) {
   Object.keys(data).forEach(key => {
-    if (data[key]) updateField(key, data[key]);
+    if(data[key]) updateField(key, data[key]);
   });
 }
 
 function updateField(key, value) {
-  if (!value) return;
+  if(!value) return;
+  // No sobreescribir con el mismo valor
+  if(state.capturedData[key] === value) return;
   state.capturedData[key] = value;
 
   const valEl = document.getElementById("val-" + key);
   const dotEl = document.getElementById("dot-" + key);
 
-  if (valEl) {
+  if(valEl) {
     valEl.textContent = value;
-    valEl.classList.remove("empty");
+    valEl.classList.remove("empty", "flash");
     valEl.classList.add("filled");
+    // Forzar reflow para reiniciar animación
+    void valEl.offsetWidth;
+    valEl.classList.add("flash");
   }
-  if (dotEl) dotEl.classList.add("active");
+  if(dotEl) dotEl.classList.add("active");
 }
 
 function updateProgress(step) {
-  for (let i = 0; i < 5; i++) {
+  for(let i = 0; i < 5; i++) {
     const dot = document.getElementById("pd" + i);
-    if (!dot) continue;
+    if(!dot) continue;
     dot.classList.remove("done","active");
-    if (i < step) dot.classList.add("done");
-    else if (i === step) dot.classList.add("active");
+    if(i < step) dot.classList.add("done");
+    else if(i === step) dot.classList.add("active");
   }
 }
 
 function showTier(tier, feeRevenue, readyToSync) {
-  const card = document.getElementById("tier-card");
-  const tierVal = document.getElementById("tier-value");
-  const tierDesc = document.getElementById("tier-desc");
-  const tierFee = document.getElementById("tier-fee");
-  const syncDot = document.getElementById("sync-dot");
+  const card      = document.getElementById("tier-card");
+  const tierVal   = document.getElementById("tier-value");
+  const tierDesc  = document.getElementById("tier-desc");
+  const tierFee   = document.getElementById("tier-fee");
+  const syncDot   = document.getElementById("sync-dot");
   const syncLabel = document.getElementById("sync-label");
-  const badge = document.getElementById("tier-badge");
+  const badge     = document.getElementById("tier-badge");
 
   const tierConfig = {
-    TIER_1: { color:"#16a34a", desc:"Prioridad alta · +$10M/mes", bg:"#f0fdf4" },
-    TIER_2: { color:"#2563eb", desc:"Prioridad media · $5M–$10M/mes", bg:"#eff6ff" },
-    TIER_3: { color:"#9333ea", desc:"Prioridad baja · -$5M/mes", bg:"#faf5ff" }
+    TIER_1:{ color:"#16a34a", desc:"Prioridad alta · +$10M/mes", bg:"#f0fdf4" },
+    TIER_2:{ color:"#2563eb", desc:"Prioridad media · $5M–$10M/mes", bg:"#eff6ff" },
+    TIER_3:{ color:"#9333ea", desc:"Prioridad baja · -$5M/mes", bg:"#faf5ff" }
   };
-
   const cfg = tierConfig[tier] || tierConfig.TIER_3;
 
   tierVal.textContent = tier;
@@ -891,9 +656,9 @@ function showTier(tier, feeRevenue, readyToSync) {
   badge.style.background = cfg.bg;
 
   const fee = feeRevenue || 0;
-  tierFee.textContent = "$" + fee.toLocaleString("es-CO") + " COP/mes";
+  tierFee.textContent = "$" + (typeof fee === "number" ? fee.toLocaleString("es-CO") : fee) + " COP/mes";
 
-  if (readyToSync) {
+  if(readyToSync) {
     syncDot.style.background = "#16a34a";
     syncLabel.textContent = "ready_to_sync: true → Enviando al CRM";
     syncLabel.style.color = "#16a34a";
@@ -905,10 +670,9 @@ function showTier(tier, feeRevenue, readyToSync) {
 
   card.classList.add("visible");
 
-  // Marcar todos los pasos como completados
-  for (let i = 0; i < 5; i++) {
+  for(let i = 0; i < 5; i++) {
     const dot = document.getElementById("pd" + i);
-    if (dot) { dot.classList.remove("active"); dot.classList.add("done"); }
+    if(dot) { dot.classList.remove("active"); dot.classList.add("done"); }
   }
 }
 </script>

@@ -98,9 +98,42 @@
 
   @keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
   @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(232,49,90,.3)}50%{box-shadow:0 0 0 8px rgba(232,49,90,0)}}
+
+/* ── BOLD NAV ── */
+.bold-nav{position:fixed;top:0;left:0;right:0;z-index:9999;background:rgba(15,17,23,0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid #2a2d3e;font-family:'Inter',system-ui,sans-serif;height:48px;}
+.bold-nav-inner{display:flex;align-items:center;gap:4px;height:100%;padding:0 16px;max-width:1200px;margin:0 auto;}
+.bold-nav-home{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;color:#8b8fa8;text-decoration:none;transition:all .2s;flex-shrink:0;}
+.bold-nav-home:hover{background:#1a1d2e;color:#fff;}
+.bold-nav-home svg{width:16px;height:16px;}
+.bold-nav-divider{width:1px;height:20px;background:#2a2d3e;margin:0 8px;flex-shrink:0;}
+.bold-nav-item{display:flex;align-items:center;gap:7px;padding:6px 12px;border-radius:8px;text-decoration:none;color:#8b8fa8;transition:all .2s;border:1px solid transparent;white-space:nowrap;}
+.bold-nav-item:hover{background:var(--nav-bg);color:var(--nav-color);border-color:var(--nav-color);}
+.bold-nav-num{font-size:9px;font-weight:800;letter-spacing:.06em;background:#1a1d2e;padding:2px 5px;border-radius:4px;color:#8b8fa8;transition:all .2s;line-height:1.4;}
+.bold-nav-label{font-size:11px;font-weight:600;letter-spacing:.02em;}
+.bold-nav[data-active="part1"] [data-key="part1"],
+.bold-nav[data-active="part2"] [data-key="part2"],
+.bold-nav[data-active="part3"] [data-key="part3"],
+.bold-nav[data-active="bonus"] [data-key="bonus"]{background:var(--nav-bg);color:var(--nav-color);border-color:var(--nav-color);}
+.bold-nav[data-active="part1"] [data-key="part1"] .bold-nav-num,
+.bold-nav[data-active="part2"] [data-key="part2"] .bold-nav-num,
+.bold-nav[data-active="part3"] [data-key="part3"] .bold-nav-num,
+.bold-nav[data-active="bonus"] [data-key="bonus"] .bold-nav-num{background:var(--nav-color);color:#fff;}
+@media(max-width:600px){.bold-nav-label{display:none;}.bold-nav-item{padding:6px 8px;}}
 </style>
 </head>
 <body>
+<nav class="bold-nav" data-active="part3">
+  <div class="bold-nav-inner">
+    <a href="https://diegoo050399-create.github.io/Taller-Bold/" class="bold-nav-home">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+    </a>
+    <div class="bold-nav-divider"></div>
+    <a href="https://diegoo050399-create.github.io/Taller-Bold/happy-path/" class="bold-nav-item" data-key="part1" style="--nav-color:#185FA5;--nav-bg:#0c1a2e;"><span class="bold-nav-num">01</span><span class="bold-nav-label">Happy Path</span></a>
+    <a href="https://diegoo050399-create.github.io/Taller-Bold/system-prompt/" class="bold-nav-item" data-key="part2" style="--nav-color:#534AB7;--nav-bg:#100e28;"><span class="bold-nav-num">02</span><span class="bold-nav-label">System Prompt</span></a>
+    <a href="https://diegoo050399-create.github.io/Taller-Bold/node-script/" class="bold-nav-item" data-key="part3" style="--nav-color:#3B6D11;--nav-bg:#0a1a04;"><span class="bold-nav-num">03</span><span class="bold-nav-label">Node.js</span></a>
+    <a href="https://diegoo050399-create.github.io/Taller-Bold/Simulador-Boldbot/" class="bold-nav-item" data-key="bonus" style="--nav-color:#e8315a;--nav-bg:#1a0008;"><span class="bold-nav-num">★</span><span class="bold-nav-label">Simulador</span></a>
+  </div>
+</nav>
 
 <div style="text-align:center">
   <div class="bold-tag">Bold · Parte 3 · Marketing Operations</div>

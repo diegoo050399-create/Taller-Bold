@@ -675,8 +675,51 @@ const state = {
   },
   isTyping: false,
   initialized: false,
-  modalClosed: false
+  modalClosed: false,
+  lastActivity: Date.now(),
+  timeoutTimer: null,
+  timeoutFired: false
 };
+
+// ── SESSION TIMEOUT — 2 MINUTOS ──────────────────────────────
+function resetTimeout() {
+  state.lastActivity = Date.now();
+  if (state.timeoutTimer) clearTimeout(state.timeoutTimer);
+  if (state.timeoutFired) return;
+  state.timeoutTimer = setTimeout(handleTimeout, 2 * 60 * 1000);
+}
+
+async function handleTimeout() {
+  if (state.timeoutFired) return;
+  if (!state.initialized) return;
+  state.timeoutFired = true;
+
+  const { nombre, telefono, email } = state.capturedData;
+  const hasContact = !!(nombre && telefono && email);
+
+  // Mensaje de reenganche en el chat
+  addBotMessage("¿Sigues ahí, " + (nombre ||) + "? 👋\n\nGuardé tus datos por si quieres continuar después. ¡Aquí estaré cuando me necesites!");
+
+  // Si tiene datos de contacto → guardar en Sheets + enviar email
+  if (hasContact) {
+    try {
+      await fetch(N8N_WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sessionId:    state.sessionId,
+          message:      "__TIMEOUT__",
+          history:      state.messages,
+          capturedData: state.capturedData,
+          isInit:       false,
+          isTimeout:    true
+        })
+      });
+    } catch(e) {
+      console.log("Timeout save failed:", e);
+    }
+  }
+}
 
 // ── MODAL ────────────────────────────────────────────────────
 function closeModal() {
@@ -701,7 +744,6 @@ async function initChat() {
   showTyping(true);
   document.getElementById("bot-status").textContent = "escribiendo...";
   updateProgress(0);
-
   try {
     const response = await fetch(N8N_WEBHOOK_URL, {
       method: "POST",
@@ -714,47 +756,40 @@ async function initChat() {
         isInit: true
       })
     });
-
     if (!response.ok) throw new Error("init failed");
-
     const data = await response.json();
     showTyping(false);
     document.getElementById("bot-status").textContent = "en línea";
-
     const welcomeMsg = data.reply ||
       "¡Hola! Soy Boldbot, el asesor de Bold Colombia 👋\n\nEstoy aquí para ayudarte a hacer crecer tu negocio con pagos, financiamiento y más.\n\n¿Cuál es tu nombre?";
-
     addBotMessage(welcomeMsg);
     state.messages.push({ role: "assistant", content: welcomeMsg });
     state.initialized = true;
-
+    resetTimeout(); // ← TIMEOUT INICIADO
     if (data.capturedData) updateCapturedData(data.capturedData);
     if (data.tier)         showTier(data.tier, data.fee_revenue, data.ready_to_sync);
-
   } catch(e) {
     showTyping(false);
     document.getElementById("bot-status").textContent = "en línea";
-    // Saludo de respaldo si n8n no responde al init
     const fallback = "¡Hola! Soy Boldbot, el asesor de Bold Colombia 👋\n\nEstoy aquí para ayudarte a hacer crecer tu negocio con pagos, financiamiento y más.\n\n¿Cuál es tu nombre?";
     addBotMessage(fallback);
     state.messages.push({ role: "assistant", content: fallback });
     state.initialized = true;
+    resetTimeout(); // ← TIMEOUT INICIADO (fallback)
   }
 }
 
 // ── ENVIAR MENSAJE ───────────────────────────────────────────
 async function sendMessage() {
+  resetTimeout(); // ← reinicia el timer en cada mensaje
   const input = document.getElementById("chat-input");
   const text  = input.value.trim();
   if (!text || state.isTyping || !state.initialized) return;
-
   input.value = "";
   addUserMessage(text);
   state.messages.push({ role: "user", content: text });
-
   showTyping(true);
   document.getElementById("bot-status").textContent = "escribiendo...";
-
   try {
     const response = await fetch(N8N_WEBHOOK_URL, {
       method: "POST",
@@ -767,25 +802,18 @@ async function sendMessage() {
         isInit:       false
       })
     });
-
     if (!response.ok) throw new Error("webhook error " + response.status);
-
     const data = await response.json();
     showTyping(false);
     document.getElementById("bot-status").textContent = "en línea";
-
     if (data.reply) {
       addBotMessage(data.reply);
       state.messages.push({ role: "assistant", content: data.reply });
     }
-
     if (data.capturedData) updateCapturedData(data.capturedData);
     if (data.tier)         showTier(data.tier, data.fee_revenue, data.ready_to_sync);
-
-    // Actualiza progreso según datos capturados
     const filled = Object.values(state.capturedData).filter(v => v !== null).length;
     updateProgress(filled);
-
   } catch(error) {
     showTyping(false);
     document.getElementById("bot-status").textContent = "en línea";

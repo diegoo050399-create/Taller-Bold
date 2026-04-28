@@ -561,9 +561,9 @@ function addUserMessage(text) {
 
 function addBotMessage(text) {
   const chat = document.getElementById("chat-bg");
-  const row  = document.createElement("div");
+  const row = document.createElement("div");
   row.className = "msg-row in";
-  row.innerHTML = `<div class="bubble in">${escapeHtml(text).replace(/\n/g,"<br>")}<div class="bubble-time in">${getTime()}</div></div>`;
+  row.innerHTML = `<div class="bubble in">${escapeHtml(text).replace(/\n/g, "<br>")}<div class="bubble-time in">${getTime()}</div></div>`;
   chat.insertBefore(row, document.getElementById("typing-row"));
   scrollToBottom();
 }

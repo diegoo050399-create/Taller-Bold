@@ -6,24 +6,8 @@
 <title>Boldbot — Simulador de Ventas WhatsApp</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap');
-
   *{box-sizing:border-box;margin:0;padding:0}
-  :root{
-    --wa-bg:#eae6df;
-    --wa-header:#075e54;
-    --wa-header-2:#128c7e;
-    --wa-green:#25d366;
-    --wa-bubble-out:#dcf8c6;
-    --wa-bubble-in:#ffffff;
-    --wa-text:#111b21;
-    --wa-sub:#667781;
-    --wa-border:#e9edef;
-    --accent:#e8315a;
-    --tier1:#16a34a;
-    --tier2:#2563eb;
-    --tier3:#9333ea;
-  }
-
+  :root{--wa-bg:#eae6df;--wa-header:#075e54;--wa-header-2:#128c7e;--wa-green:#25d366;--wa-bubble-out:#dcf8c6;--wa-bubble-in:#ffffff;--wa-text:#111b21;--wa-sub:#667781;--wa-border:#e9edef;--accent:#e8315a;--tier1:#16a34a;--tier2:#2563eb;--tier3:#9333ea;}
   body{font-family:'Nunito',sans-serif;background:#f0f2f5;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;}
   .app-title{text-align:center;margin-bottom:16px;opacity:0;animation:fadeUp .5s .1s forwards;}
   .app-title h1{font-size:15px;font-weight:700;color:#41525d;letter-spacing:.3px}
@@ -89,8 +73,6 @@
   .prog-dot{width:8px;height:8px;border-radius:50%;background:#e9edef;transition:background .3s;}
   .prog-dot.done{background:var(--wa-green)}
   .prog-dot.active{background:var(--wa-header);animation:pulse-dot .8s infinite}
-
-  /* MODAL */
   .modal-overlay{position:fixed;inset:0;background:rgba(15,30,35,.75);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:1000;padding:20px;opacity:0;animation:overlayIn .4s forwards;}
   .modal-overlay.closing{animation:overlayOut .3s forwards;}
   .modal-card{background:#fff;border-radius:16px;max-width:440px;width:100%;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.3);transform:scale(.9) translateY(20px);opacity:0;animation:modalIn .45s .1s cubic-bezier(.34,1.56,.64,1) forwards;}
@@ -116,7 +98,6 @@
   .modal-btn:active{transform:translateY(0)}
   .modal-btn svg{width:16px;height:16px;fill:#fff}
   .modal-footer{text-align:center;margin-top:12px;font-size:11px;color:#8696a0;}
-
   @keyframes overlayIn{to{opacity:1}}
   @keyframes overlayOut{to{opacity:0}}
   @keyframes modalIn{to{opacity:1;transform:scale(1) translateY(0)}}
@@ -125,34 +106,20 @@
   @keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
   @keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
   @keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.4}}
-
-  @media(max-width:480px){
-    .modal-card{max-width:100%}
-    .modal-hero{padding:24px 20px 20px}
-    .modal-body{padding:20px 20px 18px}
-    .modal-title{font-size:18px}
-  }
-
-/* ── BOLD NAV ── */
-.bold-nav{position:fixed;top:0;left:0;right:0;z-index:9999;background:rgba(15,17,23,0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid #2a2d3e;font-family:'Inter',system-ui,sans-serif;height:48px;}
-.bold-nav-inner{display:flex;align-items:center;gap:4px;height:100%;padding:0 16px;max-width:1200px;margin:0 auto;}
-.bold-nav-home{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;color:#8b8fa8;text-decoration:none;transition:all .2s;flex-shrink:0;}
-.bold-nav-home:hover{background:#1a1d2e;color:#fff;}
-.bold-nav-home svg{width:16px;height:16px;}
-.bold-nav-divider{width:1px;height:20px;background:#2a2d3e;margin:0 8px;flex-shrink:0;}
-.bold-nav-item{display:flex;align-items:center;gap:7px;padding:6px 12px;border-radius:8px;text-decoration:none;color:#8b8fa8;transition:all .2s;border:1px solid transparent;white-space:nowrap;}
-.bold-nav-item:hover{background:var(--nav-bg);color:var(--nav-color);border-color:var(--nav-color);}
-.bold-nav-num{font-size:9px;font-weight:800;letter-spacing:.06em;background:#1a1d2e;padding:2px 5px;border-radius:4px;color:#8b8fa8;transition:all .2s;line-height:1.4;}
-.bold-nav-label{font-size:11px;font-weight:600;letter-spacing:.02em;}
-.bold-nav[data-active="part1"] [data-key="part1"],
-.bold-nav[data-active="part2"] [data-key="part2"],
-.bold-nav[data-active="part3"] [data-key="part3"],
-.bold-nav[data-active="bonus"] [data-key="bonus"]{background:var(--nav-bg);color:var(--nav-color);border-color:var(--nav-color);}
-.bold-nav[data-active="part1"] [data-key="part1"] .bold-nav-num,
-.bold-nav[data-active="part2"] [data-key="part2"] .bold-nav-num,
-.bold-nav[data-active="part3"] [data-key="part3"] .bold-nav-num,
-.bold-nav[data-active="bonus"] [data-key="bonus"] .bold-nav-num{background:var(--nav-color);color:#fff;}
-@media(max-width:600px){.bold-nav-label{display:none;}.bold-nav-item{padding:6px 8px;}}
+  @media(max-width:480px){.modal-card{max-width:100%}.modal-hero{padding:24px 20px 20px}.modal-body{padding:20px 20px 18px}.modal-title{font-size:18px}}
+  .bold-nav{position:fixed;top:0;left:0;right:0;z-index:9999;background:rgba(15,17,23,0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid #2a2d3e;font-family:'Inter',system-ui,sans-serif;height:48px;}
+  .bold-nav-inner{display:flex;align-items:center;gap:4px;height:100%;padding:0 16px;max-width:1200px;margin:0 auto;}
+  .bold-nav-home{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;color:#8b8fa8;text-decoration:none;transition:all .2s;flex-shrink:0;}
+  .bold-nav-home:hover{background:#1a1d2e;color:#fff;}
+  .bold-nav-home svg{width:16px;height:16px;}
+  .bold-nav-divider{width:1px;height:20px;background:#2a2d3e;margin:0 8px;flex-shrink:0;}
+  .bold-nav-item{display:flex;align-items:center;gap:7px;padding:6px 12px;border-radius:8px;text-decoration:none;color:#8b8fa8;transition:all .2s;border:1px solid transparent;white-space:nowrap;}
+  .bold-nav-item:hover{background:var(--nav-bg);color:var(--nav-color);border-color:var(--nav-color);}
+  .bold-nav-num{font-size:9px;font-weight:800;letter-spacing:.06em;background:#1a1d2e;padding:2px 5px;border-radius:4px;color:#8b8fa8;transition:all .2s;line-height:1.4;}
+  .bold-nav-label{font-size:11px;font-weight:600;letter-spacing:.02em;}
+  .bold-nav[data-active="bonus"] [data-key="bonus"]{background:#1a0008;color:#e8315a;border-color:#e8315a;}
+  .bold-nav[data-active="bonus"] [data-key="bonus"] .bold-nav-num{background:#e8315a;color:#fff;}
+  @media(max-width:600px){.bold-nav-label{display:none;}.bold-nav-item{padding:6px 8px;}}
 </style>
 </head>
 <body>
@@ -169,7 +136,6 @@
   </div>
 </nav>
 
-<!-- MODAL -->
 <div class="modal-overlay" id="welcome-modal">
   <div class="modal-card" id="welcome-modal-card">
     <div class="modal-hero">
@@ -236,26 +202,11 @@
         Datos capturados
       </div>
       <div class="panel-body">
-        <div class="field-row">
-          <div class="field-label"><span class="field-dot" id="dot-nombre"></span>Nombre</div>
-          <div class="field-value empty" id="val-nombre">Esperando...</div>
-        </div>
-        <div class="field-row">
-          <div class="field-label"><span class="field-dot" id="dot-negocio"></span>Negocio</div>
-          <div class="field-value empty" id="val-negocio">Esperando...</div>
-        </div>
-        <div class="field-row">
-          <div class="field-label"><span class="field-dot" id="dot-telefono"></span>Teléfono</div>
-          <div class="field-value empty" id="val-telefono">Esperando...</div>
-        </div>
-        <div class="field-row">
-          <div class="field-label"><span class="field-dot" id="dot-email"></span>Email</div>
-          <div class="field-value empty" id="val-email">Esperando...</div>
-        </div>
-        <div class="field-row">
-          <div class="field-label"><span class="field-dot" id="dot-ventas"></span>Ventas mensuales</div>
-          <div class="field-value empty" id="val-ventas">Esperando...</div>
-        </div>
+        <div class="field-row"><div class="field-label"><span class="field-dot" id="dot-nombre"></span>Nombre</div><div class="field-value empty" id="val-nombre">Esperando...</div></div>
+        <div class="field-row"><div class="field-label"><span class="field-dot" id="dot-negocio"></span>Negocio</div><div class="field-value empty" id="val-negocio">Esperando...</div></div>
+        <div class="field-row"><div class="field-label"><span class="field-dot" id="dot-telefono"></span>Teléfono</div><div class="field-value empty" id="val-telefono">Esperando...</div></div>
+        <div class="field-row"><div class="field-label"><span class="field-dot" id="dot-email"></span>Email</div><div class="field-value empty" id="val-email">Esperando...</div></div>
+        <div class="field-row"><div class="field-label"><span class="field-dot" id="dot-ventas"></span>Ventas mensuales</div><div class="field-value empty" id="val-ventas">Esperando...</div></div>
       </div>
       <div class="progress-dots">
         <div class="prog-dot active" id="pd0"></div>
@@ -265,7 +216,6 @@
         <div class="prog-dot" id="pd4"></div>
       </div>
     </div>
-
     <div class="tier-card" id="tier-card">
       <div class="tier-badge" id="tier-badge">
         <div class="tier-label">Clasificación del lead</div>
@@ -285,20 +235,42 @@
 </div>
 
 <script>
-const N8N_WEBHOOK_URL = "https://n8n.lsm9.srv1575490.hstgr.cloud/webhook/boldbot-chat";
+// ── CONFIGURACIÓN ────────────────────────────────────────────
+const N8N_WEBHOOK_URL  = "https://n8n.lsm9.srv1575490.hstgr.cloud/webhook/boldbot-chat";
+const SUPABASE_URL     = "https://bgvbhvuomjtziufsgyps.supabase.co";
+const SUPABASE_KEY     = "sb_publishable_FIEwI4p5xlQqQvWQjDewiQ_82ILiKp_";
 
 const state = {
-  sessionId: "session_" + Date.now(),
-  messages: [],
-  capturedData: { nombre:null, negocio:null, telefono:null, email:null, ventas:null },
-  isTyping: false,
-  initialized: false,
-  modalClosed: false,
-  lastActivity: Date.now(),
-  timeoutTimer: null,
-  timeoutFired: false,
+  sessionId:     "session_" + Date.now(),
+  messages:      [],
+  capturedData:  { nombre:null, negocio:null, telefono:null, email:null, ventas:null },
+  isTyping:      false,
+  initialized:   false,
+  modalClosed:   false,
+  lastActivity:  Date.now(),
+  timeoutTimer:  null,
+  timeoutFired:  false,
   leadProcessed: false
 };
+
+// ── CONSULTA SUPABASE — ¿Ya fue procesado este session? ──────
+async function checkSessionProcessed() {
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/leads?session_id=eq.${state.sessionId}&select=id`,
+      {
+        headers: {
+          'apikey': SUPABASE_KEY,
+          'Authorization': `Bearer ${SUPABASE_KEY}`
+        }
+      }
+    );
+    const data = await res.json();
+    return Array.isArray(data) && data.length > 0;
+  } catch(e) {
+    return false;
+  }
+}
 
 // ── SESSION TIMEOUT ──────────────────────────────────────────
 function resetTimeout() {
@@ -312,29 +284,21 @@ async function handleTimeout() {
   if (state.timeoutFired) return;
   if (!state.initialized) return;
   state.timeoutFired = true;
-
   const { nombre, telefono, email } = state.capturedData;
   const hasContact = !!(nombre && telefono && email);
-
   addBotMessage("¿Sigues ahí, " + (nombre || "amigo") + "? 👋\n\nGuardé tus datos por si quieres continuar después. ¡Aquí estaré cuando me necesites!");
-
   if (hasContact) {
     try {
       await fetch(N8N_WEBHOOK_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          sessionId:    state.sessionId,
-          message:      "__TIMEOUT__",
-          history:      state.messages,
-          capturedData: state.capturedData,
-          isInit:       false,
-          isTimeout:    true
+          sessionId: state.sessionId, message: "__TIMEOUT__",
+          history: state.messages, capturedData: state.capturedData,
+          isInit: false, isTimeout: true
         })
       });
-    } catch(e) {
-      console.log("Timeout save failed:", e);
-    }
+    } catch(e) { console.log("Timeout save failed:", e); }
   }
 }
 
@@ -362,28 +326,25 @@ async function initChat() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        sessionId: state.sessionId,
-        message: "__INIT__",
-        history: [],
-        capturedData: state.capturedData,
-        isInit: true
+        sessionId: state.sessionId, message: "__INIT__",
+        history: [], capturedData: state.capturedData, isInit: true
       })
     });
     if (!response.ok) throw new Error("init failed");
     const data = await response.json();
     showTyping(false);
     document.getElementById("bot-status").textContent = "en línea";
-    const welcomeMsg = data.reply || "¡Hola! Soy Boldbot, el asesor de Bold Colombia 👋\n\nEstoy aquí para ayudarte a hacer crecer tu negocio con pagos, financiamiento y más.\n\n¿Cuál es tu nombre?";
+    const welcomeMsg = data.reply || "¡Hola! Soy Boldbot, el asesor de Bold Colombia 👋\n\nEstoy aquí para ayudarte a hacer crecer tu negocio.\n\n¿Con quién tengo el gusto de hablar?";
     addBotMessage(welcomeMsg);
     state.messages.push({ role:"assistant", content:welcomeMsg });
     state.initialized = true;
     resetTimeout();
     if (data.capturedData) updateCapturedData(data.capturedData);
-    if (data.tier)         showTier(data.tier, data.fee_revenue, data.ready_to_sync);
+    if (data.tier) showTier(data.tier, data.fee_revenue, data.ready_to_sync);
   } catch(e) {
     showTyping(false);
     document.getElementById("bot-status").textContent = "en línea";
-    const fallback = "¡Hola! Soy Boldbot, el asesor de Bold Colombia 👋\n\nEstoy aquí para ayudarte a hacer crecer tu negocio con pagos, financiamiento y más.\n\n¿Cuál es tu nombre?";
+    const fallback = "¡Hola! Soy Boldbot, el asesor de Bold Colombia 👋\n\nEstoy aquí para ayudarte a hacer crecer tu negocio.\n\n¿Con quién tengo el gusto de hablar?";
     addBotMessage(fallback);
     state.messages.push({ role:"assistant", content:fallback });
     state.initialized = true;
@@ -402,16 +363,22 @@ async function sendMessage() {
   state.messages.push({ role:"user", content:text });
   showTyping(true);
   document.getElementById("bot-status").textContent = "escribiendo...";
+
+  // Consulta Supabase antes de enviar para saber si ya fue procesado
+  if (!state.leadProcessed) {
+    state.leadProcessed = await checkSessionProcessed();
+  }
+
   try {
     const response = await fetch(N8N_WEBHOOK_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        sessionId:    state.sessionId,
-        message:      text,
-        history:      state.messages,
-        capturedData: state.capturedData,
-        isInit:       false,
+        sessionId:     state.sessionId,
+        message:       text,
+        history:       state.messages,
+        capturedData:  state.capturedData,
+        isInit:        false,
         leadProcessed: state.leadProcessed
       })
     });
@@ -424,10 +391,8 @@ async function sendMessage() {
       state.messages.push({ role:"assistant", content:data.reply });
     }
     if (data.capturedData) updateCapturedData(data.capturedData);
-    if (data.lead_status === 'PROCESSED' && !state.leadProcessed) {
-      state.leadProcessed = true;
-    }
-    if (data.tier)         showTier(data.tier, data.fee_revenue, data.ready_to_sync);
+    if (data.lead_status === 'PROCESSED') state.leadProcessed = true;
+    if (data.tier) showTier(data.tier, data.fee_revenue, data.ready_to_sync);
     const filled = Object.values(state.capturedData).filter(v => v !== null).length;
     updateProgress(filled);
   } catch(error) {
@@ -446,7 +411,6 @@ function addUserMessage(text) {
   chat.insertBefore(row, document.getElementById("typing-row"));
   scrollToBottom();
 }
-
 function addBotMessage(text) {
   const chat = document.getElementById("chat-bg");
   const row  = document.createElement("div");
@@ -455,7 +419,6 @@ function addBotMessage(text) {
   chat.insertBefore(row, document.getElementById("typing-row"));
   scrollToBottom();
 }
-
 function showTyping(show) {
   state.isTyping = show;
   const row = document.getElementById("typing-row");
@@ -464,41 +427,28 @@ function showTyping(show) {
   ind.classList.toggle("visible", show);
   if (show) scrollToBottom();
 }
-
 function scrollToBottom() {
   const chat = document.getElementById("chat-bg");
   setTimeout(() => chat.scrollTop = chat.scrollHeight, 50);
 }
-
 function getTime() {
   return new Date().toLocaleTimeString("es-CO", {hour:"2-digit",minute:"2-digit"});
 }
-
 function escapeHtml(text) {
   return text.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
 }
-
-// ── PANEL LATERAL ────────────────────────────────────────────
 function updateCapturedData(data) {
-  Object.keys(data).forEach(key => {
-    if (data[key]) updateField(key, data[key]);
-  });
+  Object.keys(data).forEach(key => { if (data[key]) updateField(key, data[key]); });
 }
-
 function updateField(key, value) {
   if (!value) return;
   if (state.capturedData[key] === value) return;
   state.capturedData[key] = value;
   const valEl = document.getElementById("val-" + key);
   const dotEl = document.getElementById("dot-" + key);
-  if (valEl) {
-    valEl.textContent = value;
-    valEl.classList.remove("empty");
-    valEl.classList.add("filled");
-  }
+  if (valEl) { valEl.textContent = value; valEl.classList.remove("empty"); valEl.classList.add("filled"); }
   if (dotEl) dotEl.classList.add("active");
 }
-
 function updateProgress(step) {
   for (let i = 0; i < 5; i++) {
     const dot = document.getElementById("pd" + i);
@@ -508,7 +458,6 @@ function updateProgress(step) {
     else if (i === step) dot.classList.add("active");
   }
 }
-
 function showTier(tier, feeRevenue, readyToSync) {
   const card      = document.getElementById("tier-card");
   const tierVal   = document.getElementById("tier-value");
@@ -517,22 +466,18 @@ function showTier(tier, feeRevenue, readyToSync) {
   const syncDot   = document.getElementById("sync-dot");
   const syncLabel = document.getElementById("sync-label");
   const badge     = document.getElementById("tier-badge");
-
   const tierConfig = {
     TIER_1:{ color:"#16a34a", desc:"Prioridad alta · +$10M/mes",    bg:"#f0fdf4" },
     TIER_2:{ color:"#2563eb", desc:"Prioridad media · $5M–$10M/mes", bg:"#eff6ff" },
     TIER_3:{ color:"#9333ea", desc:"Prioridad baja · -$5M/mes",      bg:"#faf5ff" }
   };
   const cfg = tierConfig[tier] || tierConfig.TIER_3;
-
   tierVal.textContent    = tier;
   tierVal.style.color    = cfg.color;
   tierDesc.textContent   = cfg.desc;
   badge.style.background = cfg.bg;
-
   const fee = feeRevenue || 0;
   tierFee.textContent = "$" + (typeof fee === "number" ? fee.toLocaleString("es-CO") : fee) + " COP/mes";
-
   if (readyToSync) {
     syncDot.style.background = "#16a34a";
     syncLabel.textContent    = "ready_to_sync: true → Enviando al CRM";
@@ -542,7 +487,6 @@ function showTier(tier, feeRevenue, readyToSync) {
     syncLabel.textContent    = "ready_to_sync: false → Nurturing";
     syncLabel.style.color    = "#9333ea";
   }
-
   card.classList.add("visible");
   for (let i = 0; i < 5; i++) {
     const dot = document.getElementById("pd" + i);

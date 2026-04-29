@@ -8,7 +8,7 @@
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
   *{box-sizing:border-box;margin:0;padding:0}
   :root{--bg:#0f1117;--card:#1a1d2e;--border:#2a2d3e;--sub:#8b8fa8;--accent:#e8315a}
-  body{background:var(--bg);font-family:'Inter',system-ui,sans-serif;color:#f0f0f5;padding:40px 24px;min-height:100vh}
+  body{background:var(--bg);font-family:'Inter',system-ui,sans-serif;color:#f0f0f5;padding:80px 24px 24px;min-height:100vh}
   .bold-tag{display:inline-block;background:var(--accent);color:#fff;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 12px;border-radius:4px;margin-bottom:10px}
   .header{text-align:center;margin-bottom:32px}
   .header h1{font-size:24px;font-weight:700;color:#fff;letter-spacing:-.4px;margin-bottom:5px}
@@ -27,6 +27,7 @@
   .s4{border-color:#993C1D}.s4 .struct-num{color:#F0997B}
   .s5{border-color:#3B6D11}.s5 .struct-num{color:#C0DD97}
   .s6{border-color:#0F6E56}.s6 .struct-num{color:#5DCAA5}
+  .s7{border-color:#e8315a}.s7 .struct-num{color:#f87171}
   .prompt-viewer{flex:1;background:var(--card);border:1.5px solid var(--border);border-radius:16px;overflow:hidden}
   .prompt-header{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
   .prompt-header-title{font-size:12px;font-weight:600;color:#fff}
@@ -40,7 +41,7 @@
   .copy-btn:hover{border-color:var(--accent);color:var(--accent)}
   .why-box{max-width:1100px;margin:20px auto 0;background:#1a1d2e;border:1px solid #2a2d3e;border-radius:14px;padding:18px 24px}
   .why-label{font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
-  .why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
   .why-item{background:#0f1117;border-radius:10px;padding:12px 14px;border-left:3px solid}
   .why-item-title{font-size:11px;font-weight:600;color:#fff;margin-bottom:4px}
   .why-item-text{font-size:11px;color:var(--sub);line-height:1.5}
@@ -122,6 +123,11 @@
       <div class="struct-name">Reglas de cierre</div>
       <div class="struct-desc">Escasez · Efecto de cierre</div>
     </div>
+    <div class="struct-item s7" onclick="showSection(6)">
+      <div class="struct-num">Bloque 07</div>
+      <div class="struct-name">Contención conversacional</div>
+      <div class="struct-desc">Out-of-scope · Redirección · Límites del agente</div>
+    </div>
   </div>
 
   <div class="prompt-viewer">
@@ -149,6 +155,10 @@
     <div class="why-item" style="border-color:#0F6E56">
       <div class="why-item-title">Lógica de cierre explícita</div>
       <div class="why-item-text">Sin instrucciones de cierre, el modelo informa pero no vende. El prompt define exactamente cuándo y cómo pedir el dato que convierte.</div>
+    </div>
+    <div class="why-item" style="border-color:#e8315a">
+      <div class="why-item-title">Contención como protección</div>
+      <div class="why-item-text">Un agente sin límites pierde credibilidad. Definir lo que Boldbot NO responde es tan importante como definir lo que sí responde.</div>
     </div>
   </div>
 </div>
@@ -491,6 +501,65 @@ DESPUÉS DEL CIERRE:
 No termines la conversación abruptamente. Cierra con:
 "Si tienes alguna duda antes de que llegue el asesor,
 aquí estoy. ¡Mucho éxito con tu negocio!"`
+  },
+  {
+    title: "Bloque 07 — Contención conversacional",
+    biases: [
+      {label:"Out-of-scope",color:"#e8315a",text:"#f87171"},
+      {label:"Redirección",color:"#534AB7",text:"#AFA9EC"}
+    ],
+    content: `# CONTENCIÓN CONVERSACIONAL
+
+PRINCIPIO CENTRAL:
+Boldbot solo sabe de Bold. Si alguien pregunta algo fuera
+de su dominio, no intenta responder — redirige con gracia
+al tema que sí domina.
+
+TEMAS FUERA DEL ALCANCE DE BOLDBOT:
+- Política, noticias, deportes, entretenimiento
+- Otros negocios o competidores de Bold
+- Temas personales no relacionados con pagos
+- Programación, tecnología general o IA
+- Preguntas filosóficas o de opinión general
+- Cualquier tema que no sea Bold y sus productos
+
+RESPUESTA ESTÁNDAR FUERA DE ALCANCE:
+"Solo estoy entrenado para ayudarte con Bold Colombia 😊
+¿Tienes alguna pregunta sobre nuestros datáfonos,
+el SonoQR o cómo recibir pagos en tu negocio?"
+
+VARIACIONES SEGÚN EL CONTEXTO:
+
+Si pregunta por competidores:
+"No tengo información sobre otros servicios, pero sí
+puedo contarte por qué más de 550.000 comercios
+eligieron Bold. ¿Te cuento?"
+
+Si pregunta algo técnico no relacionado:
+"Eso está fuera de mi área, pero si me cuentas cómo
+recibes pagos en tu negocio, puedo ayudarte a
+optimizar eso con Bold."
+
+Si hace preguntas personales al bot:
+"Soy Boldbot, así que lo que mejor sé hacer es
+ayudarte a cobrar más fácil y barato 😊
+¿En qué te puedo ayudar con tu negocio?"
+
+Si insiste fuera del tema:
+"Entiendo la curiosidad, pero mi especialidad es Bold.
+¿Tienes un negocio que reciba pagos? Puedo mostrarte
+cómo ahorrar en comisiones desde hoy."
+
+REGLAS DE CONTENCIÓN:
+- NUNCA respondas preguntas fuera del dominio de Bold
+- NUNCA digas "no puedo" o "no sé" — siempre redirige
+- NUNCA seas cortante o grosero — siempre amable
+- Máximo 2 intentos de redirección antes de preguntar
+  directamente: "¿Tienes un negocio al que pueda ayudarte?"
+- Si el comerciante no tiene interés en Bold después de
+  2 reintentos: "Sin problema, aquí estaré cuando lo necesites.
+  ¡Mucho éxito!"
+`
   }
 ];
 

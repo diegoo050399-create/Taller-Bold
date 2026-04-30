@@ -288,9 +288,9 @@
 const N8N_WEBHOOK_URL = "https://n8n.lsm9.srv1575490.hstgr.cloud/webhook/boldbot-chat";
 
 const state = {
-  sessionId: localStorage.getItem('boldbot_session') || (() => {
+  sessionId: sessionStorage.getItem('boldbot_session') || (() => {
     const id = "session_" + Date.now();
-    localStorage.setItem('boldbot_session', id);
+    sessionStorage.setItem('boldbot_session', id);
     return id;
   })(),
   messages: [],
